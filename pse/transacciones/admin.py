@@ -2,7 +2,7 @@ from django.contrib import admin
 from models import *
 
 # Register your models here.
-admin.site.register(producto)
+admin.site.register(Producto)
 admin.site.register(Pais)
 admin.site.register(Moneda)
 admin.site.register(Departamento)

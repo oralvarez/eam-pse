@@ -17,14 +17,24 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from rest_framework import routers
 from quickstart import views
+from transacciones.views import MonedaViewSet, PaisViewSet, ProductoViewSet, LocalizacionViewSet, TipoContratoViewSet, TipoObjetoViewSet, TipoUbicacionViewSet, ClienteViewSet
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
-router.register(r'notas', views.NotaViewSet)
+router.register(r'moneda', MonedaViewSet)
+router.register(r'pais', PaisViewSet)
+router.register(r'producto', ProductoViewSet)
+router.register(r'cliente', ClienteViewSet)
+router.register(r'localizacion', LocalizacionViewSet)
+router.register(r'tipocontrato', TipoContratoViewSet)
+router.register(r'tipoobjeto', TipoObjetoViewSet)
+router.register(r'tipoubicacion', TipoUbicacionViewSet)
+
 
 urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    #url(r'^monedas/(?P<pk>[0-9]+)/$', MonedaDetail.as_view()),
     url(r'^admin/', include(admin.site.urls)),
 ]
