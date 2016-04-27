@@ -18,6 +18,7 @@ from django.contrib import admin
 from rest_framework import routers
 from quickstart import views
 from transacciones.views import MonedaViewSet, PaisViewSet, ProductoViewSet, LocalizacionViewSet, TipoContratoViewSet, TipoObjetoViewSet, TipoUbicacionViewSet, ClienteViewSet
+from .admin import admin_site
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
@@ -35,6 +36,5 @@ router.register(r'tipoubicacion', TipoUbicacionViewSet)
 urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    #url(r'^monedas/(?P<pk>[0-9]+)/$', MonedaDetail.as_view()),
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', include(admin.site.urls)),    
 ]
