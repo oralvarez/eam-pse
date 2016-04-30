@@ -1,7 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User, Group
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, post_save, post_delete
 from django.dispatch import receiver
+from django.db.models import Max
+
+import django
+from django.conf import settings
+from django.core.mail import send_mail
 
 #Modelos basicos
 class Pais(models.Model):
@@ -51,6 +56,10 @@ class TipoObjeto(models.Model):
 	nombre = models.CharField(max_length=30)
 	descripcion = models.TextField()
 
+class TipoProducto(models.Model):
+	nombre = models.CharField(max_length=50)
+	descripcion = models.TextField()
+
 	def __unicode__(self):
 		return self.nombre
 
@@ -80,37 +89,64 @@ class Localizacion(models.Model):
 
 #Modelo principal para todas las transacciones disponibles
 class Producto(models.Model):
-	consecutivo = models.CharField(max_length=30)
-	fecha_registro = models.DateField(auto_now_add=True)
-	estado = models.CharField(max_length=50)
-	usuario = models.ForeignKey(User)
-	fecha_requerido = models.DateField(auto_now_add=True)
-	es_secreto = models.BooleanField()
-	objeto = models.TextField()
-	localizacion = models.ForeignKey(Localizacion)
-	observaciones = models.TextField()
-	numero_proceso = models.CharField(max_length=30)
-	nivel_inteligencia = models.CharField(max_length=30)
-	descripcion_bien_servicio = models.TextField()
-	tipo_ubicacion = models.ForeignKey(TipoUbicacion)
-	proveedores_sugeridos = models.TextField()
-	numero_contrato = models.CharField(max_length=30)
-	numero_requerimiento = models.CharField(max_length=30)
-	valor = models.DecimalField(max_digits=20, decimal_places=2)
-	moneda = models.ForeignKey(Moneda)
-	fecha_inicio = models.DateField()
-	fecha_terminacion = models.DateField()
-	numero_contrato_marco = models.CharField(max_length=30)
-	tipo_contrato = models.ForeignKey(TipoContrato)
-	tipo_contrato_cual = models.CharField(max_length=50)
-	numero_pedido_ot_od_os = models.CharField(max_length=50)
-	numero_orden_compra = models.CharField(max_length=50)
-	nit = models.CharField(max_length=20)
-	razon_social = models.CharField(max_length=200)
+	consecutivo = models.CharField(max_length=30, blank=True, null=True)
+	numero_consecutivo = models.DecimalField(max_digits=30, decimal_places=0, blank=True, null=True)
+	fecha_registro = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+	estado = models.CharField(max_length=50, blank=True, null=True)
+	usuario = models.ForeignKey(User, blank=True, null=True)
+	fecha_requerido = models.DateField(auto_now_add=True, blank=True, null=True)
+	es_secreto = models.NullBooleanField()
+	objeto = models.TextField(blank=True, null=True)
+	localizacion = models.ForeignKey(Localizacion, blank=True, null=True)
+	observaciones = models.TextField(blank=True, null=True)
+	numero_proceso = models.CharField(max_length=30, blank=True, null=True)
+	nivel_inteligencia = models.CharField(max_length=30, blank=True, null=True)
+	descripcion_bien_servicio = models.TextField(blank=True, null=True)
+	tipo_ubicacion = models.ForeignKey(TipoUbicacion, blank=True, null=True)
+	proveedores_sugeridos = models.TextField(blank=True, null=True)
+	numero_contrato = models.CharField(max_length=30, blank=True, null=True)
+	numero_requerimiento = models.CharField(max_length=30, blank=True, null=True)
+	valor = models.DecimalField(max_digits=20, decimal_places=2, blank=True, null=True)
+	moneda = models.ForeignKey(Moneda, blank=True, null=True)
+	fecha_inicio = models.DateField(blank=True, null=True)
+	fecha_terminacion = models.DateField(blank=True, null=True)
+	numero_contrato_marco = models.CharField(max_length=30, blank=True, null=True)
+	tipo_contrato = models.ForeignKey(TipoContrato, blank=True, null=True)
+	tipo_contrato_cual = models.CharField(max_length=50, blank=True, null=True)
+	numero_pedido_ot_od_os = models.CharField(max_length=50, blank=True, null=True)
+	numero_orden_compra = models.CharField(max_length=50, blank=True, null=True)
+	nit = models.CharField(max_length=20, blank=True, null=True)
+	razon_social = models.CharField(max_length=200, blank=True, null=True)
+	tipo_producto = models.ForeignKey(TipoProducto, blank=True, null=True)
+	createdAt =  models.DateTimeField(auto_now_add=True, blank=True, null=True)
+	updatedAt = models.DateTimeField(auto_now=True, blank=True, null=True)
 
 	def __unicode__(self):
-		return self.consecutivo
+		return '%s -%s - %s' % (self.consecutivo, self.createdAt, self.updatedAt)
 
-	@receiver(pre_save)
-	def my_callback(sender, instance, *args, **kwargs):
-    		instance.consecutivo = "100" #Producto.objects.get(pk=1).consecutivo + 1
+@receiver(post_save, sender=Producto)
+def enviar_notificacion_actualizacion_producto(sender, instance, created, *args, **kwargs):
+	from_message = "oralvarez@gmail.com"
+	to_message = User.objects.get(username=instance.usuario.username).email
+	subject = "Probando"
+	message = "Probando"
+
+	if created:
+		instance.numero_consecutivo = Producto.objects.all().aggregate(Max('numero_consecutivo')).get('numero_consecutivo__max') + 1
+		instance.consecutivo = instance.numero_consecutivo
+	 	subject = "Actividad: " + str(instance.consecutivo) + " creada"
+	 	message = "Se ha creado la actividad # " + str(instance.consecutivo) + ", por favor verificar"
+	else:
+	 	subject = "Actividad: " + str(instance.consecutivo) + " actualizada"
+	 	message = "Se ha actualizado la actividad # " + str(instance.consecutivo) + ", por favor verificar"
+
+	send_mail(subject, message, from_message, [to_message], fail_silently=False)
+
+@receiver(post_delete, sender=Producto)
+def enviar_notificacion_borrado_producto(sender, instance, *args, **kwargs):
+	from_message = "oralvarez@gmail.com"
+	to_message = User.objects.get(username=instance.usuario.username).email
+ 	subject = "Actividad: " + str(instance.consecutivo) + " borrada"
+ 	message = "Se ha borrado la actividad # " + str(instance.consecutivo) + ", por favor verificar"
+
+	send_mail(subject, message, from_message, [to_message], fail_silently=False)

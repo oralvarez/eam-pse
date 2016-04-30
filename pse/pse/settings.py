@@ -108,3 +108,10 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 STATIC_URL = '/static/'
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'oralvarez@gmail.com'
+EMAIL_HOST_PASSWORD = '##F3l1p301$2015#'
+EMAIL_PORT = 587
+DEFAULT_FROM_EMAIL = 'oralvarez@gmail.com'
