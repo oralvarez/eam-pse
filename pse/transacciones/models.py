@@ -61,7 +61,10 @@ class TipoProducto(models.Model):
 	descripcion = models.TextField()
 
 	def __unicode__(self):
-		return self.nombre
+		return '%s - %s' %(self.id, self.nombre)
+
+def content_file_name(instance, filename):
+    return '/'.join(['content', instance.nit, filename])
 
 class Cliente(models.Model):
 	nit = models.CharField(max_length=50)
@@ -70,7 +73,7 @@ class Cliente(models.Model):
 	ciudad = models.ForeignKey(Ciudad)
 	telefono = models.CharField(max_length=50)
 	datos_contacto = models.CharField(max_length=200)
-	logo = models.FileField(upload_to=None, max_length=500)
+	logo = models.FileField(upload_to=content_file_name, max_length=500)
 
 	def __unicode__(self):
 		return self.nit
@@ -91,7 +94,7 @@ class Localizacion(models.Model):
 class Producto(models.Model):
 	consecutivo = models.CharField(max_length=30, blank=True, null=True)
 	numero_consecutivo = models.DecimalField(max_digits=30, decimal_places=0, blank=True, null=True)
-	fecha_registro = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+	fecha_registro = models.DateTimeField(auto_now_add=True, blank=True, null=True, editable=False)
 	estado = models.CharField(max_length=50, blank=True, null=True)
 	usuario = models.ForeignKey(User, blank=True, null=True)
 	fecha_requerido = models.DateField(auto_now_add=True, blank=True, null=True)

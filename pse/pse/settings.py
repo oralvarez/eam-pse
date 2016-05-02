@@ -63,7 +63,7 @@ ROOT_URLCONF = 'pse.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates',],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -104,14 +104,20 @@ USE_L10N = True
 USE_TZ = True
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static_in_pro"),
+    #'/var/www/static/',
+]
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'oralvarez@gmail.com'
-EMAIL_HOST_PASSWORD = '##F3l1p301$2015#'
+EMAIL_HOST_PASSWORD = '##F3l1p301$2016$'
 EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = 'oralvarez@gmail.com'

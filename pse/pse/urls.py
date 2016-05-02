@@ -17,24 +17,34 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from rest_framework import routers
 from quickstart import views
-from transacciones.views import MonedaViewSet, PaisViewSet, ProductoViewSet, LocalizacionViewSet, TipoContratoViewSet, TipoObjetoViewSet, TipoUbicacionViewSet, ClienteViewSet
+from transacciones.views import *
 from .admin import admin_site
+from . import settings
+ 
+from django.conf.urls.static import static
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
 router.register(r'moneda', MonedaViewSet)
 router.register(r'pais', PaisViewSet)
+router.register(r'departamento', DepartamentoViewSet)
+router.register(r'ciudad', CiudadViewSet)
 router.register(r'producto', ProductoViewSet)
 router.register(r'cliente', ClienteViewSet)
 router.register(r'localizacion', LocalizacionViewSet)
 router.register(r'tipocontrato', TipoContratoViewSet)
 router.register(r'tipoobjeto', TipoObjetoViewSet)
 router.register(r'tipoubicacion', TipoUbicacionViewSet)
+router.register(r'tipoproducto', TipoProductoViewSet)
 
 
 urlpatterns = [
     url(r'^', include(router.urls)),
+    #url(r'^', OnePageAppView.as_view(), name='home'),
+    #url(r'^api/auth/$', transacciones.views.AuthView.as_view(), name='authenticate')
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^admin/', include(admin.site.urls)),    
-]
+    url(r'^api/auth/$', AuthView.as_view(), name='authenticate'),
+    url(r'^admin/', include(admin.site.urls)),  
+    url(r'^poe/$', poe, name='poe'),  
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
