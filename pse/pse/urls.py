@@ -40,11 +40,12 @@ router.register(r'tipoproducto', TipoProductoViewSet)
 
 
 urlpatterns = [
-    url(r'^', include(router.urls)),
+    url(r'^api/', include(router.urls)),
     #url(r'^', OnePageAppView.as_view(), name='home'),
     #url(r'^api/auth/$', transacciones.views.AuthView.as_view(), name='authenticate')
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^api/auth/$', AuthView.as_view(), name='authenticate'),
-    url(r'^admin/', include(admin.site.urls)),  
-    url(r'^poe/$', poe, name='poe'),  
+    url(r'^admin/', include(admin.site.urls)),
+    url(r'^$', index, name='index'),
+    url(r'^nav/abastecimiento/productos/(?P<tipo>[0-9])/$', productos, name='productos'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

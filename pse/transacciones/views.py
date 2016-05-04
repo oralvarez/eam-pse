@@ -103,10 +103,20 @@ class ProductoViewSet(viewsets.ModelViewSet):
 
 
 @api_view(['GET'])
-def poe(request):
-    template = loader.get_template('transacciones/index.html')
+def index(request):
+    template = loader.get_template('tema3/index.html')
     context = {
         'late': 1,
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def productos(request, tipo):
+    tp = TipoProducto.objects.get(pk=tipo)
+    template = loader.get_template('tema3/productos.html')
+    context = {
+        'titulo': tp.nombre,
+        'tipo': tipo,
     }
     return HttpResponse(template.render(context, request))
 
