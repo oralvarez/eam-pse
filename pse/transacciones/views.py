@@ -104,7 +104,7 @@ class ProductoViewSet(viewsets.ModelViewSet):
 
 @api_view(['GET'])
 def poe(request):
-    template = loader.get_template('tema2/index.html')
+    template = loader.get_template('transacciones/index.html')
     context = {
         'late': 1,
     }

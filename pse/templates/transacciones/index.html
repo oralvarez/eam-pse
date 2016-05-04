@@ -17,6 +17,21 @@ app.controller('myCtrl', function($scope, $http) {
         $scope.myWelcome = response.data.fecha_inicio;
     });
 });
+app.config(['$httpProvider', function($httpProvider) {
+    $httpProvider.defaults.headers.common['X-CSRFToken'] = '{{ csrf_token|escapejs }}';
+}]);
+
+app.factory 'User', ['$resource', ($resource) ->
+    $resource '/api/users/:username', username: '@username'
+]
+
+app.factory 'Producto', ['$resource', ($resource) ->
+    $resource '/producto/:id', id: '@id'
+]
+
+app.controller 'AppController', ['$scope', 'Post', ($scope, Post) ->
+    $scope.posts = Post.query()
+]
 
 angular.module('authApp', ['ngResource']).
     config(['$httpProvider', function($httpProvider){
