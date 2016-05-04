@@ -47,5 +47,6 @@ urlpatterns = [
     url(r'^api/auth/$', AuthView.as_view(), name='authenticate'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', index, name='index'),
-    url(r'^nav/abastecimiento/productos/(?P<tipo>[0-9])/$', productos, name='productos'),
+    url(r'^nav/abastecimiento/productos/(?P<tipo>[0-9])/$', lista_productos, name='lista_productos'),
+    #url(r'^nav/abastecimiento/productos/(?P<tipo>[0-9])/$', productos, name='productos'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

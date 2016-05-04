@@ -120,7 +120,23 @@ def productos(request, tipo):
     }
     return HttpResponse(template.render(context, request))
 
- 
+def lista_productos(request, tipo):
+    tp = TipoProducto.objects.get(pk=tipo)
+    template = loader.get_template('tema3/lista_productos.html')
+    context = {
+        'titulo': tp.nombre,
+        'tipo': tipo,
+    }
+    return HttpResponse(template.render(context, request))
+
+def detalle_producto(request, id):
+    template = loader.get_template('tema3/productos.html')
+    context = {
+        'titulo': tp.nombre,
+        'id' : id,
+    }
+    return HttpResponse(template.render(context, request))
+
 class AuthView(APIView):
     authentication_classes = (QuietBasicAuthentication,)
  
