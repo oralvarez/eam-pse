@@ -1,0 +1,199 @@
+{% extends "tema3/base.html" %}  
+
+{% block page_header %}
+	<h1>{{titulo}}</h1>
+{% endblock page_header %}
+ 
+{% block contenido %}
+<div ng-app="myApp">
+<div ng-controller="editController">
+    <h5>Editar Servicio</h5>
+	<div class="row">
+    <form class="form" role="form" ng-submit="addMovie()">
+		<div class="col-lg-6">
+			<div class="form-group">
+				<input type="text" class="form-control" ng-model="Producto.consecutivo" placeholder="Consecutivo" disabled>
+			</div>
+		</div>
+		<div class="col-lg-6">
+			<div class="form-group">
+				<input type="text" class="form-control" ng-model="Producto.fecha_registro" placeholder="Fecha de Registro" disabled>
+			</div>
+		</div>                                            
+		<div class="col-lg-6">
+			<div class="form-group">
+				<input type="text" class="form-control" ng-model="Producto.estado" placeholder="Estado">
+			</div>
+		</div>                                            
+		<div class="col-lg-6">
+			<div class="form-group">
+				<input type="text" class="form-control" ng-model="Producto.usuario" placeholder="Usuario">
+			</div>
+		</div>                                            
+		<div class="col-lg-6">
+			<div class="form-group">
+				<input type="text" class="form-control" ng-model="Producto.fecha_requerido" placeholder="Fecha de Requerido">
+			</div>
+		</div>                                            
+		<div class="col-lg-6">
+			<div class="form-group">
+				<input type="text" class="form-control" ng-model="Producto.es_secreto" placeholder="Es Secreto?">
+			</div>
+		</div>                                            
+		{% if tipo == "1" %}
+		<div class="col-lg-12">
+			<div class="form-group">
+				<textarea class="form-control" ng-model="Producto.objeto" placeholder="Objeto" ></textarea>
+			</div>
+		</div>
+		{% endif %}			
+		<div class="col-lg-12">
+			<div class="form-group">
+				<input type="text" class="form-control" ng-model="Producto.localizacion" placeholder="Localizacion">
+			</div>
+		</div>
+		<div class="col-lg-12">
+			<div class="form-group">
+				<textarea class="form-control" ng-model="Producto.observaciones" placeholder="Observaciones" ></textarea>
+			</div>
+		</div>                                            
+		<div class="col-lg-4">	
+			<div class="form-group">
+				<input type="text" class="form-control" ng-model="Producto.numero_proceso" placeholder="Numero de Proceso">
+			</div>
+		</div>                                            
+		<div class="col-lg-4">	
+			<div class="form-group">
+				<input type="text" class="form-control" ng-model="Producto.nivel_inteligencia" placeholder="Nivel de Inteligencia">
+			</div>
+		</div>                                            
+		<div class="col-lg-12">
+			<div class="form-group">
+				<textarea class="form-control" ng-model="Producto.descripcion_bien_servicio" placeholder="Descripcion del Bien o Servicio" ></textarea>
+			</div>
+		</div>                                            
+		<div class="col-lg-4">
+			<div class="form-group">
+				<input type="text" class="form-control" ng-model="Producto.tipo_ubicacion" placeholder="Tipo de Ubicacion">
+			</div>
+		</div>                                            
+		<div class="col-lg-4">
+			<div class="form-group">
+				<input type="text" class="form-control" ng-model="Producto.proveedores_sugeridos" placeholder="Proveedores Sugeridos">
+			</div>
+		</div>
+		<div class="col-lg-4">		
+			<div class="form-group">
+				<input type="text" class="form-control" ng-model="Producto.numero_contrato" placeholder="Numero de Contrato">
+			</div>
+		</div>                                            
+		<div class="col-lg-4">
+			<div class="form-group">
+				<input type="text" class="form-control" ng-model="Producto.numero_requerimiento" placeholder="Numerom de Requerimiento">
+			</div>
+		</div>                                            
+		<div class="col-lg-4">		
+			<div class="form-group">
+				<input type="text" class="form-control" ng-model="Producto.valor" placeholder="Valor (Sin IVA)">
+			</div>
+		</div>                                            
+		<div class="col-lg-4">
+			<div class="form-group">
+				<input type="text" class="form-control" ng-model="Producto.moneda" placeholder="Moneda">
+			</div>
+		</div>                                            
+		<div class="col-lg-4">
+			<div class="form-group">
+				<input type="text" class="form-control" ng-model="Producto.fecha_inicio" placeholder="Fecha Inicio">
+			</div>
+		</div>                                                                                        
+		<div class="col-lg-4">
+			<div class="form-group">
+				<input type="text" class="form-control" ng-model="Producto.fecha_terminacion" placeholder="Fecha Fin">
+			</div>
+		</div>                                            
+		<div class="col-lg-4">
+			<div class="form-group">
+				<input type="text" class="form-control" ng-model="Producto.numero_contrato_marco" placeholder="Numero de Contrato o Contrato Marco">
+			</div>
+		</div>                                            
+		<div class="col-lg-4">
+			<div class="form-group">
+				<input type="text" class="form-control" ng-model="Producto.tipo_contrato" placeholder="Tipo de Contrato">
+			</div>
+		</div>                                            
+		<div class="col-lg-4">
+			<div class="form-group">
+				<input type="text" class="form-control" ng-model="Producto.tipo_contrato_cual" placeholder="Cual?">
+			</div>
+		</div>                                            
+		<div class="col-lg-4">
+			<div class="form-group">
+				<input type="text" class="form-control" ng-model="Producto.numero_pedido_ot_od_os" placeholder="Numero de Pedido para OT/OD/OS">
+			</div>
+		</div>                                            
+		<div class="col-lg-4">
+			<div class="form-group">
+				<input type="text" class="form-control" ng-model="Producto.numero_orden_compra" placeholder="Numero Orden de Compra">
+			</div>
+		</div>                                            
+		<div class="col-lg-4">
+			<div class="form-group">
+				<input type="text" class="form-control" ng-model="Producto.nit" placeholder="NIT">
+			</div>
+		</div>                                            
+		<div class="col-lg-8">
+			<div class="form-group">
+				<input type="text" class="form-control" ng-model="Producto.razon_social" placeholder="Razon Social">
+			</div>
+		</div>    
+		
+		<input type="submit" class="btn btn-primary" value="Save"/>		
+</form>
+</div>
+</div>
+</div>
+{% endblock contenido%}
+
+{% block js %}
+<script>
+// Add the CSRF Token
+var app = angular.module('myApp',['ngResource']); // Not including a list of dependent modules (2nd parameter to `module`) "re-opens" the module for additional configuration
+
+app.config(['$httpProvider', function($httpProvider) {
+    $httpProvider.defaults.headers.common['X-CSRFToken'] = '{{ csrf_token|escapejs }}';
+}]);
+
+angular.module('myApp').factory('Producto', function($resource) {
+  return $resource('/api/producto/:id'); // Note the full endpoint address
+});
+
+angular.module('myApp.controllers',[]);
+
+angular.module('myApp.controllers').controller('ResourceController',function($scope, producto) {
+  var producto = producto.get({ id: $scope.id }, function() {
+    console.log(producto);
+  }); // get() returns a single producto
+
+  var productos = producto.query(function() {
+    console.log(productos);
+  }); //query() returns all the entries
+
+  $scope.producto = new producto(); //You can instantiate resource class
+
+  $scope.producto.data = 'some data';
+
+  producto.save($scope.producto, function() {
+    //data saved. do something here.
+  }); //saves an producto. Assuming $scope.producto is the producto object  
+});
+
+angular.module('myApp').factory('Producto', function($resource) {
+  return $resource('/api/producto/:id', { id: '@_id' }, {
+    update: {
+      method: 'PUT' // this method issues a PUT request
+    }
+  });
+});
+</script>
+{% endblock js %}

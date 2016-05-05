@@ -1,0 +1,62 @@
+{% extends "tema3/base.html" %}  
+
+{% block page_header %}
+	<h1>{{titulo}}</h1>
+{% endblock page_header %}
+ 
+{% block contenido %}
+<div ng-app="myApp" ng-controller="myController">
+	{% verbatim %}
+			<table class="table-striped">
+				<tr>
+					<th>Consecutivo</th>
+					<th>Fecha de Registro</th>
+					<th>Estado</th>
+				</tr>
+				<tr ng-repeat="producto in productos">
+					<td><a href="/api/producto/{{producto.id}}">{{producto.consecutivo}}</td>
+					<td>{{producto.fecha_registro | date }}</td>
+					<td>{{producto.estado}}</td>
+				</tr>				
+			</table>
+	{% endverbatim %}
+	</div>
+</div>
+{% endblock contenido%}
+
+{% block js %}
+<script>
+//var app = angular.module('myApp',['ngResource']); 
+/*
+*/
+var app = angular.module('myApp', ['ngResource']);
+
+// Add the CSRF Token
+app.config(['$httpProvider', function($httpProvider) {
+    $httpProvider.defaults.headers.common['X-CSRFToken'] = '{{ csrf_token|escapejs }}';
+}]);
+
+app.factory('ProductoService', function($resource) {
+  return $resource('/api/producto/:id', {id: '@id'}, {'query': {method: 'GET', isArray: false}}); // Note the full endpoint address
+});
+
+app.controller('myController', function($scope, $http, ProductoService) {
+	var query = ProductoService.query();
+	query.$promise.then(function(data){
+		console.log(data);
+		$scope.productos = data.results;
+	});
+	
+    /*
+	$http.get("/api/producto/")
+    .then(function (response) {
+		$scope.productos = response.data.results;
+		console.log(response.data.results);
+	});
+	*/
+});
+
+
+
+</script>
+{% endblock js %}
