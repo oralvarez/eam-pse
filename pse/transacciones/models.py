@@ -3,6 +3,7 @@ from django.contrib.auth.models import User, Group
 from django.db.models.signals import pre_save, post_save, post_delete
 from django.dispatch import receiver
 from django.db.models import Max
+from django.template.loader import render_to_string
 
 import django
 from django.conf import settings
@@ -134,20 +135,22 @@ class Clientes_Producto(models.Model):
 @receiver(post_save, sender=Producto)
 def enviar_notificacion_actualizacion_producto(sender, instance, created, *args, **kwargs):
     from_message = "oralvarez@gmail.com"
+    nombre_usuario = instance.usuario.username #User.objects.get(username=instance.usuario.username).first_name + " " + User.objects.get(username=instance.usuario.username).last_name
     to_message = User.objects.get(username=instance.usuario.username).email
     subject = "Probando"
     message = "Probando"
 
     if created:
         instance.numero_consecutivo = Producto.objects.all().aggregate(Max('numero_consecutivo')).get('numero_consecutivo__max') + 1
-        instance.consecutivo = instance.numero_consecutivo
+        instance.consecutivo = "ASD-2016-" + str(instance.numero_consecutivo)
+        instance.save()
         subject = "Actividad: " + str(instance.consecutivo) + " creada"
-        message = "Se ha creado la actividad # " + str(instance.consecutivo) + ", por favor verificar"
+        message = render_to_string('tema3/correo.html', {'usuario': nombre_usuario, 'consecutivo': instance.consecutivo})
     else:
          subject = "Actividad: " + str(instance.consecutivo) + " actualizada"
-         message = "Se ha actualizado la actividad # " + str(instance.consecutivo) + ", por favor verificar"
+         message = render_to_string('tema3/correo.html', {'usuario': nombre_usuario, 'consecutivo': instance.consecutivo})
 
-    send_mail(subject, message, from_message, [to_message], fail_silently=False)
+    send_mail(subject, message, from_message, [to_message], fail_silently=False, html_message=message)
 
 @receiver(post_delete, sender=Producto)
 def enviar_notificacion_borrado_producto(sender, instance, *args, **kwargs):
