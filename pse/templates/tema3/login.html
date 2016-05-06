@@ -37,7 +37,8 @@
 	app.controller('loginController',function($scope, $http) {
         $scope.submit = (function(){
             console.log($scope.usuario);
-            $http.post('/token-auth/', $scope.usuario);
+            var xe = $http.post('/token-auth/', { "username":$scope.usuario.username,  "password":$scope.usuario.password });
+			console.log(xe);
         });
 	});
 </script>

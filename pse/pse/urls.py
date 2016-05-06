@@ -49,8 +49,8 @@ urlpatterns = [
     url(r'^api/auth/$', AuthView.as_view(), name='authenticate'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', index, name='index'),
-    url(r'^nav/abastecimiento/productos/(?P<tipo>[0-9])/$', lista_productos, name='lista_productos'),
-    url(r'^nav/abastecimiento/productos/detalle/(?P<id>\d+)$', detalle_producto, name='detalle_producto'),
-    url(r'^nav/abastecimiento/productos/nuevo/$', agregar_producto, name='agregar_producto'),
+    url(r'^nav/abastecimiento/productos/(?P<tipo>[0-9])/$', lista_productos_abastecimiento, name='lista_productos_abastecimiento'),
+    url(r'^nav/abastecimiento/productos/detalle/(?P<id>\d+)$', detalle_producto_abastecimiento, name='detalle_producto_abastecimiento'),
+    url(r'^nav/abastecimiento/productos/nuevo/$', agregar_producto_abastecimiento, name='agregar_producto_abastecimiento'),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

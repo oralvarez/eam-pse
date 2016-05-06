@@ -110,37 +110,27 @@ def index(request):
     }
     return HttpResponse(template.render(context, request))
 
-
-def productos(request, tipo):
+def lista_productos_abastecimiento(request, tipo):
     tp = TipoProducto.objects.get(pk=tipo)
-    template = loader.get_template('tema3/productos.html')
+    template = loader.get_template('tema3/lista_productos_abastecimiento.html')
     context = {
         'titulo': tp.nombre,
         'tipo': tipo,
     }
     return HttpResponse(template.render(context, request))
 
-def lista_productos(request, tipo):
-    tp = TipoProducto.objects.get(pk=tipo)
-    template = loader.get_template('tema3/lista_productos.html')
+def detalle_producto_abastecimiento(request, id):
+    template = loader.get_template('tema3/detalle_producto_abastecimiento.html')
     context = {
-        'titulo': tp.nombre,
-        'tipo': tipo,
-    }
-    return HttpResponse(template.render(context, request))
-
-def detalle_producto(request, id):
-    template = loader.get_template('tema3/productos.html')
-    context = {
-        'titulo': 'detalle',
+        'titulo': 'Edicion de Servicio',
         'id' : id,
     }
     return HttpResponse(template.render(context, request))
 
-def agregar_producto(request):
-    template = loader.get_template('tema3/productos.html')
+def agregar_producto_abastecimiento(request):
+    template = loader.get_template('tema3/detalle_producto_abastecimiento.html')
     context = {
-        'titulo': 'detalle',
+        'titulo': 'Nuevo Servicio',
         'id' : 0,
     }
     return HttpResponse(template.render(context, request))
