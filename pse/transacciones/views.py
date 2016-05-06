@@ -132,8 +132,16 @@ def lista_productos(request, tipo):
 def detalle_producto(request, id):
     template = loader.get_template('tema3/productos.html')
     context = {
-        'titulo': tp.nombre,
+        'titulo': 'detalle',
         'id' : id,
+    }
+    return HttpResponse(template.render(context, request))
+
+def agregar_producto(request):
+    template = loader.get_template('tema3/productos.html')
+    context = {
+        'titulo': 'detalle',
+        'id' : 0,
     }
     return HttpResponse(template.render(context, request))
 

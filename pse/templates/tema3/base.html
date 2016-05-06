@@ -39,7 +39,7 @@
 
 </head>
 
-<body>
+<body ng-app="myApp">
 
     <div id="wrapper">
 
@@ -228,6 +228,16 @@
 	  <!-- AngularJS Resource-->
     <script src="/static/tema3/js/angular-resource/angular-resource.js"></script>
   
+	<!-- Scripts basicos -->
+    <script src="/static/tema3/js/app.js"></script>
+	<script>	
+		// Add the CSRF Token
+		app.config(['$httpProvider', function($httpProvider) {
+			$httpProvider.defaults.headers.common['X-CSRFToken'] = '{{ csrf_token|escapejs }}';
+		}]);
+	</script>
+    <script src="/static/tema3/js/services.js"></script>
+    <script src="/static/tema3/js/controllers.js"></script>
 	{% block js %}{% endblock %}
 </body>
 

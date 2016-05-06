@@ -5,11 +5,11 @@
 {% endblock page_header %}
  
 {% block contenido %}
-<div ng-app="myApp">
+{% verbatim %}
 <div ng-controller="editController">
     <h5>Editar Servicio</h5>
 	<div class="row">
-    <form class="form" role="form" ng-submit="addMovie()">
+    <form class="form" role="form" ng-submit="submit()">
 		<div class="col-lg-6">
 			<div class="form-group">
 				<input type="text" class="form-control" ng-model="Producto.consecutivo" placeholder="Consecutivo" disabled>
@@ -27,7 +27,8 @@
 		</div>                                            
 		<div class="col-lg-6">
 			<div class="form-group">
-				<input type="text" class="form-control" ng-model="Producto.usuario" placeholder="Usuario">
+				<select ng-model="Producto.usuario" ng-options="user.id as user.username for user in users">
+				</select>
 			</div>
 		</div>                                            
 		<div class="col-lg-6">
@@ -37,16 +38,14 @@
 		</div>                                            
 		<div class="col-lg-6">
 			<div class="form-group">
-				<input type="text" class="form-control" ng-model="Producto.es_secreto" placeholder="Es Secreto?">
+				<input type="checkbox" class="form-control" ng-model="Producto.es_secreto" placeholder="Es Secreto?">
 			</div>
 		</div>                                            
-		{% if tipo == "1" %}
-		<div class="col-lg-12">
+		<div class="col-lg-12" ng-show="Producto.tipo_producto == 2">
 			<div class="form-group">
 				<textarea class="form-control" ng-model="Producto.objeto" placeholder="Objeto" ></textarea>
 			</div>
 		</div>
-		{% endif %}			
 		<div class="col-lg-12">
 			<div class="form-group">
 				<input type="text" class="form-control" ng-model="Producto.localizacion" placeholder="Localizacion">
@@ -146,54 +145,50 @@
 			<div class="form-group">
 				<input type="text" class="form-control" ng-model="Producto.razon_social" placeholder="Razon Social">
 			</div>
-		</div>    
-		
-		<input type="submit" class="btn btn-primary" value="Save"/>		
+		</div>   
+		<div class="col-lg-12">
+					<input type="submit" class="btn btn-primary" value="Guardar"/>		
+		</div>
+		<hidden ng-model="Producto.id" />
 </form>
-</div>
+{% endverbatim %}
+    
 </div>
 </div>
 {% endblock contenido%}
 
 {% block js %}
 <script>
-// Add the CSRF Token
-var app = angular.module('myApp',['ngResource']); // Not including a list of dependent modules (2nd parameter to `module`) "re-opens" the module for additional configuration
+	app.controller('editController',function($scope, $http, ProductoService, UserService) {
+		var idx = {{ id }};
+		var q_users = UserService.query();
+		q_users.$promise.then(function(data){
+		$scope.users = data.results;
+	});	
+	
+	var productox = ProductoService.get({ id: idx }, function() {
+		$scope.Producto = productox;	
+	});
+  
+  $scope.submit = function(){
+	console.log($scope.Producto);
+	console.log($scope.Producto.id);
+	
+	if ($scope.Producto.id == 'undefined')
+	{
+		//ProductoService.update($scope.Producto);	
+		$http.put('/api/producto/', $scope.Producto);	
 
-app.config(['$httpProvider', function($httpProvider) {
-    $httpProvider.defaults.headers.common['X-CSRFToken'] = '{{ csrf_token|escapejs }}';
-}]);
-
-angular.module('myApp').factory('Producto', function($resource) {
-  return $resource('/api/producto/:id'); // Note the full endpoint address
+	}
+	else
+	{
+		//$scope.Producto.id = 0;
+		//ProductoService.post($scope.Producto);	
+		$http.post('/api/producto/', $scope.Producto);	
+	}	
+	//alert("se agrego");
+  };
 });
 
-angular.module('myApp.controllers',[]);
-
-angular.module('myApp.controllers').controller('ResourceController',function($scope, producto) {
-  var producto = producto.get({ id: $scope.id }, function() {
-    console.log(producto);
-  }); // get() returns a single producto
-
-  var productos = producto.query(function() {
-    console.log(productos);
-  }); //query() returns all the entries
-
-  $scope.producto = new producto(); //You can instantiate resource class
-
-  $scope.producto.data = 'some data';
-
-  producto.save($scope.producto, function() {
-    //data saved. do something here.
-  }); //saves an producto. Assuming $scope.producto is the producto object  
-});
-
-angular.module('myApp').factory('Producto', function($resource) {
-  return $resource('/api/producto/:id', { id: '@_id' }, {
-    update: {
-      method: 'PUT' // this method issues a PUT request
-    }
-  });
-});
 </script>
 {% endblock js %}
