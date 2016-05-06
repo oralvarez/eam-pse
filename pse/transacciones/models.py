@@ -127,6 +127,10 @@ class Producto(models.Model):
     def __unicode__(self):
         return '%s -%s - %s' % (self.consecutivo, self.createdAt, self.updatedAt)
 
+
+class Clientes_Producto(models.Model):
+    pass
+
 @receiver(post_save, sender=Producto)
 def enviar_notificacion_actualizacion_producto(sender, instance, created, *args, **kwargs):
     from_message = "oralvarez@gmail.com"

@@ -158,3 +158,8 @@ class AuthView(APIView):
 
 class OnePageAppView(TemplateView):
     template_name = 'transacciones/one_page_app.html'
+
+def login(request):
+    template = loader.get_template("tema3/login.html")
+    context = {}
+    return HttpResponse(template.render(context, request))

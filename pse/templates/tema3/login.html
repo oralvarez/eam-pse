@@ -1,0 +1,44 @@
+{% extends "tema3/base.html" %}  
+
+{% block page_header %}
+	<h1>{{titulo}}</h1>
+{% endblock page_header %}
+ 
+{% block contenido %}
+{% verbatim %}
+<div ng-controller="loginController">
+    <h5>Iniciar Sesion</h5>
+	<div class="row">
+    <form class="form" role="form" ng-submit="submit()">
+		<div class="col-lg-4">
+			<div class="form-group">
+				<input type="text" class="form-control" ng-model="usuario.username" placeholder="Usuario" >
+			</div>
+		</div>
+		<div class="col-lg-4">
+			<div class="form-group">
+				<input type="password" class="form-control" ng-model="usuario.password" placeholder="Contraseña" >
+			</div>
+		</div>                                            
+			<div class="col-lg-8">
+					<input type="submit" class="btn btn-primary" value="Iniciar Sesion"/>
+		    </div>
+        </div>
+
+</form>
+{% endverbatim %}
+    
+</div>
+</div>
+{% endblock contenido%}
+
+{% block js %}
+<script>
+	app.controller('loginController',function($scope, $http) {
+        $scope.submit = (function(){
+            console.log($scope.usuario);
+            $http.post('/token-auth/', $scope.usuario);
+        });
+	});
+</script>
+{% endblock js %}

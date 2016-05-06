@@ -25,4 +25,3 @@ class NotaViewSet(viewsets.ModelViewSet):
     queryset = Nota.objects.all().order_by('-detalle')
     serializer_class = NotaSerializer
 
-
