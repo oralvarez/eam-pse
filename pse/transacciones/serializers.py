@@ -62,22 +62,24 @@ class ProductoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Producto
         fields = ('id', 'consecutivo', 'fecha_registro', 'estado', 'usuario', 'fecha_requerido', 'es_secreto', 'objeto', 'localizacion', 'observaciones', 'numero_proceso', 'nivel_inteligencia', 'descripcion_bien_servicio', 'tipo_ubicacion' , 'proveedores_sugeridos', 'numero_contrato', 'numero_requerimiento', 'valor', 'moneda', 'fecha_inicio', 'fecha_terminacion', 'numero_contrato_marco', 'tipo_contrato', 'tipo_contrato_cual', 'numero_pedido_ot_od_os', 'numero_orden_compra', 'nit', 'razon_social', 'numero_consecutivo', 'tipo_producto')
-        def validate(self, data):
-            """
-            Check that the start is before the stop.
-            """
-            if data['tipo_producto'] == 1:
-                if data['tipo_contrato'] == "":
-                    raise serializers.ValidationError("No tiene tipo de contrato")
-                if data['objeto'] == "":
-                    raise serializers.ValidationError("No tiene objeto")
-                if data['valor'] <= 0:
-                    raise serializers.ValidationError("El valor tiene que ser superior a 0")
-                if data['moneda'] == "":
-                    raise serializers.ValidationError("Debe seleccionar una moneda")
-                if data['numero_contrato'] == "":
-                    raise serializers.ValidationError("Debe indicar un numero de contrato")
-                if data['observaciones'] == "":
-                    raise serializers.ValidationError("Debe tener observaciones")
 
-            return data
+            # def validate(self, data):
+    #     """
+    #     Check that the start is before the stop.
+    #     """
+    #     # if data['tipo_producto'] == 1:
+    #     #     if data['tipo_contrato'] == "":
+    #     #         raise serializers.ValidationError("No tiene tipo de contrato")
+    #     #     if data['objeto'] == "":
+    #     #         raise serializers.ValidationError("No tiene objeto")
+    #     #     if data['valor'] <= 0:
+    #     #         raise serializers.ValidationError("El valor tiene que ser superior a 0")
+    #     #     if data['moneda'] == "":
+    #     #         raise serializers.ValidationError("Debe seleccionar una moneda")
+    #     #     if data['numero_contrato'] == "":
+    #     #         raise serializers.ValidationError("Debe indicar un numero de contrato")
+    #     #
+    #     # if data['observaciones'] == "":
+    #     #     raise serializers.ValidationError("Debe tener observaciones")
+    #
+    #     return data

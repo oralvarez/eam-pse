@@ -13,5 +13,8 @@ admin.site.register(TipoUbicacion)
 admin.site.register(TipoObjeto)
 admin.site.register(Cliente)
 admin.site.register(Localizacion)
+admin.site.register(Usuario_Localizacion)
 
+#no.reply@eamcys.com
+#No123
 

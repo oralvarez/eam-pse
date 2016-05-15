@@ -1,0 +1,44 @@
+{% extends "tema3/base.html" %}  
+
+{% block page_header %}
+	<h1>{{titulo}}</h1>
+	<p>		<a class="btn btn-success btn-sm" role="button" href="/nav/abastecimiento/productos/nuevo">Agregar</a>
+{% endblock page_header %}
+ 
+{% block contenido %}
+<div ng-controller="myController">
+	{% verbatim %}
+			
+		Estado: <input type="text" data-ng-model='search.$'>
+		<!--
+		<button class="btn btn-link" ng-click="exportToExcel('#table1')">
+			<span class="glyphicon glyphicon-share"></span> Export to Excel
+		</button>
+		-->
+
+		<table class="table table-striped" id="table1">
+			<tr>
+				<th>Consecutivo</th>
+				<th>Fecha de Registro</th>
+				<th>Estado</th>
+				<th>Es Secreto?</th>
+				<th>Observaciones</th>
+			</tr>
+			<tr ng-repeat="producto in productos | filter: search | orderBy: '-fecha_registro'">
+				<td><a href="/nav/abastecimiento/productos/detalle/{{producto.id}}">{{producto.consecutivo}}</td>
+				<td>{{producto.fecha_registro | date }}</td>
+				<td>{{producto.estado}}</td>
+				<td>{{producto.es_secreto}}</td>
+				<td>{{producto.observaciones}}</td>
+			</tr>				
+		</table>
+	{% endverbatim %}
+	</div>
+</div>
+{% endblock contenido%}
+
+{% block js %}
+<script>
+
+</script>
+{% endblock js %}

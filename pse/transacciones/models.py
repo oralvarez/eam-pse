@@ -4,6 +4,8 @@ from django.db.models.signals import pre_save, post_save, post_delete
 from django.dispatch import receiver
 from django.db.models import Max
 from django.template.loader import render_to_string
+from django.contrib.auth.models import User, Permission
+from django.db.models import Q
 
 import django
 from django.conf import settings
@@ -51,11 +53,15 @@ class TipoUbicacion(models.Model):
     descripcion = models.TextField()
 
     def __unicode__(self):
-        return self.nombre
+        return '%s - %s' % (self.id, self.nombre)
 
 class TipoObjeto(models.Model):
     nombre = models.CharField(max_length=30)
     descripcion = models.TextField()
+
+    def __unicode__(self):
+        return '%s - %s' % (self.id, self.nombre)
+
 
 class TipoProducto(models.Model):
     nombre = models.CharField(max_length=50)
@@ -67,6 +73,9 @@ class TipoProducto(models.Model):
 def content_file_name(instance, filename):
     return '/'.join(['clientes', instance.nit, filename])
 
+def content_file_name_anexo(instance, filename):
+    return '/'.join(['anexos', instance.producto, filename])
+
 class Cliente(models.Model):
     nit = models.CharField(max_length=50)
     razon_social = models.TextField()
@@ -77,7 +86,7 @@ class Cliente(models.Model):
     logo = models.FileField(upload_to=content_file_name, max_length=500)
 
     def __unicode__(self):
-        return self.nit
+        return '%s - %s' %(self.nit, self.razon_social)
 
 class Localizacion(models.Model):
     cliente = models.ForeignKey(Cliente)
@@ -89,7 +98,7 @@ class Localizacion(models.Model):
     localizacion_padre = models.ForeignKey('self', null=True, blank=True)
     
     def __unicode__(self):
-        return self.identificacion
+        return '%s - %s' % (self.identificacion, self.nombre)
 
 #Modelo principal para todas las transacciones disponibles
 class Producto(models.Model):
@@ -128,17 +137,55 @@ class Producto(models.Model):
     def __unicode__(self):
         return '%s -%s - %s' % (self.consecutivo, self.createdAt, self.updatedAt)
 
+class Anexo_Producto(models.Model):
+    producto = models.ForeignKey(Producto)
+    usuario = models.ForeignKey(User)
+    anexo = models.FileField(upload_to=content_file_name_anexo)
+    fecha = models.DateField(auto_now_add=True)
+    descripcion = models.CharField(max_length=500)
 
-class Clientes_Producto(models.Model):
-    pass
+    def __unicode__(self):
+        return '%s - %s - %s - %s' % (self.producto, self.usuario, self.anexo, self.fecha)
+
+class Estado_Producto(models.Model):
+    producto = models.ForeignKey(Producto)
+    usuario = models.ForeignKey(User)
+    estado_anterior = models.CharField(max_length=100)
+    accion = models.CharField(max_length=100)
+    estado_actual = models.CharField(max_length=100)
+    fecha = models.DateField(auto_now_add=True)
+    descripcion = models.CharField(max_length=500)
+
+    def __unicode__(self):
+        return '%s - %s - %s - %s' % (self.producto, self.usuario, self.anexo, self.fecha)
+
+
+class Usuario_Localizacion(models.Model):
+    localizacion = models.ForeignKey(Localizacion)
+    usuario = models.ForeignKey(User)
+    vigencia_fecha_desde = models.DateField()
+    vigencia_fecha_hasta = models.DateField()
+
+    def __unicode__(self):
+        return '%s - %s - %s - %s' % (self.localizacion, self.usuario, self.vigencia_fecha_desde, self.vigencia_fecha_hasta)
+
+
 
 @receiver(post_save, sender=Producto)
 def enviar_notificacion_actualizacion_producto(sender, instance, created, *args, **kwargs):
     from_message = "oralvarez@gmail.com"
+    instance.usuario = request.user
     nombre_usuario = instance.usuario.username #User.objects.get(username=instance.usuario.username).first_name + " " + User.objects.get(username=instance.usuario.username).last_name
     to_message = User.objects.get(username=instance.usuario.username).email
     subject = "Probando"
     message = "Probando"
+
+    recipients = []
+    for user in User.objects.filter(groups__name='Asignador'):
+        recipients.append(user.email)
+
+    for user in User.objects.filter(groups__name='Administradores'):
+        recipients.append(user.email)
 
     if created:
         instance.numero_consecutivo = Producto.objects.all().aggregate(Max('numero_consecutivo')).get('numero_consecutivo__max') + 1
@@ -151,6 +198,7 @@ def enviar_notificacion_actualizacion_producto(sender, instance, created, *args,
          message = render_to_string('tema3/correo.html', {'usuario': nombre_usuario, 'consecutivo': instance.consecutivo})
 
     send_mail(subject, message, from_message, [to_message], fail_silently=False, html_message=message)
+    send_mail(subject, message, from_message, [recipients], fail_silently=False, html_message=message)
 
 @receiver(post_delete, sender=Producto)
 def enviar_notificacion_borrado_producto(sender, instance, *args, **kwargs):
@@ -159,4 +207,10 @@ def enviar_notificacion_borrado_producto(sender, instance, *args, **kwargs):
     subject = "Actividad: " + str(instance.consecutivo) + " borrada"
     message = "Se ha borrado la actividad # " + str(instance.consecutivo) + ", por favor verificar"
 
+    # recipients = []
+    # for ep in Estado_Producto.objects.get()
+    # for user in User.objects.filter(groups__name='Asignador'):
+    #     recipients.append(user.email)
+
     send_mail(subject, message, from_message, [to_message], fail_silently=False)
+    send_mail(subject, message, from_message, [recipients], fail_silently=False, html_message=message)

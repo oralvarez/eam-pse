@@ -101,7 +101,6 @@ class ProductoViewSet(viewsets.ModelViewSet):
     queryset = Producto.objects.all().order_by('-consecutivo')
     serializer_class = ProductoSerializer
 
-
 @api_view(['GET'])
 def index(request):
     template = loader.get_template('tema3/index.html')
