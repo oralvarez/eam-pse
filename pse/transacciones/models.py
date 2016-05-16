@@ -98,7 +98,7 @@ class Localizacion(models.Model):
     localizacion_padre = models.ForeignKey('self', null=True, blank=True)
     
     def __unicode__(self):
-        return '%s - %s' % (self.identificacion, self.nombre)
+        return 'CLIENTE: %s - IDENTIFICACION: %s - TIPO: %s - NOMBRE: %s' % (self.cliente, self.identificacion, self.tipo, self.nombre)
 
 #Modelo principal para todas las transacciones disponibles
 class Producto(models.Model):
@@ -140,9 +140,9 @@ class Producto(models.Model):
 class Anexo_Producto(models.Model):
     producto = models.ForeignKey(Producto)
     usuario = models.ForeignKey(User)
-    anexo = models.FileField(upload_to=content_file_name_anexo)
+    anexo = models.FileField(upload_to='anexos')
     fecha = models.DateField(auto_now_add=True)
-    descripcion = models.CharField(max_length=500)
+    descripcion = models.CharField(max_length=500, blank=True, null=True)
 
     def __unicode__(self):
         return '%s - %s - %s - %s' % (self.producto, self.usuario, self.anexo, self.fecha)
@@ -150,14 +150,14 @@ class Anexo_Producto(models.Model):
 class Estado_Producto(models.Model):
     producto = models.ForeignKey(Producto)
     usuario = models.ForeignKey(User)
-    estado_anterior = models.CharField(max_length=100)
-    accion = models.CharField(max_length=100)
-    estado_actual = models.CharField(max_length=100)
+    estado_anterior = models.CharField(max_length=100, blank=True, null=True)
+    accion = models.CharField(max_length=100, blank=True, null=True)
+    estado_actual = models.CharField(max_length=100, blank=True, null=True)
     fecha = models.DateField(auto_now_add=True)
-    descripcion = models.CharField(max_length=500)
+    descripcion = models.CharField(max_length=500, blank=True, null=True)
 
     def __unicode__(self):
-        return '%s - %s - %s - %s' % (self.producto, self.usuario, self.anexo, self.fecha)
+        return '%s - %s - %s - %s - %s - %s - %s' % (self.producto, self.usuario, self.estado_anterior, self.accion, self.estado_actual, self.fecha, self.descripcion)
 
 
 class Usuario_Localizacion(models.Model):
@@ -169,12 +169,22 @@ class Usuario_Localizacion(models.Model):
     def __unicode__(self):
         return '%s - %s - %s - %s' % (self.localizacion, self.usuario, self.vigencia_fecha_desde, self.vigencia_fecha_hasta)
 
+class Acciones_Estado(models.Model):
+    descripcion = models.CharField(max_length=100, blank=True, null=True)
 
+    def __unicode__(self):
+        return '%s' % (self.descripcion)
+
+class Acciones_Sourcing(models.Model):
+    descripcion = models.CharField(max_length=100, blank=True, null=True)
+
+    def __unicode__(self):
+        return '%s' % (self.descripcion)
 
 @receiver(post_save, sender=Producto)
 def enviar_notificacion_actualizacion_producto(sender, instance, created, *args, **kwargs):
     from_message = "oralvarez@gmail.com"
-    instance.usuario = request.user
+    #instance.usuario = request.user
     nombre_usuario = instance.usuario.username #User.objects.get(username=instance.usuario.username).first_name + " " + User.objects.get(username=instance.usuario.username).last_name
     to_message = User.objects.get(username=instance.usuario.username).email
     subject = "Probando"
@@ -190,6 +200,9 @@ def enviar_notificacion_actualizacion_producto(sender, instance, created, *args,
     if created:
         instance.numero_consecutivo = Producto.objects.all().aggregate(Max('numero_consecutivo')).get('numero_consecutivo__max') + 1
         instance.consecutivo = "ASD-2016-" + str(instance.numero_consecutivo)
+        instance.estado = "Sin Asignar"
+        ep = Estado_Producto(producto=instance, usuario=instance.usuario, estado_anterior="", accion="Crear", estado_actual="Sin Asignar", descripcion="Creacion de servicio con ID: " + instance.consecutivo)
+        ep.save()
         instance.save()
         subject = "Actividad: " + str(instance.consecutivo) + " creada"
         message = render_to_string('tema3/correo.html', {'usuario': nombre_usuario, 'consecutivo': instance.consecutivo})
@@ -198,7 +211,7 @@ def enviar_notificacion_actualizacion_producto(sender, instance, created, *args,
          message = render_to_string('tema3/correo.html', {'usuario': nombre_usuario, 'consecutivo': instance.consecutivo})
 
     send_mail(subject, message, from_message, [to_message], fail_silently=False, html_message=message)
-    send_mail(subject, message, from_message, [recipients], fail_silently=False, html_message=message)
+    #send_mail(subject, message, from_message, [recipients], fail_silently=False, html_message=message)
 
 @receiver(post_delete, sender=Producto)
 def enviar_notificacion_borrado_producto(sender, instance, *args, **kwargs):
@@ -213,4 +226,47 @@ def enviar_notificacion_borrado_producto(sender, instance, *args, **kwargs):
     #     recipients.append(user.email)
 
     send_mail(subject, message, from_message, [to_message], fail_silently=False)
-    send_mail(subject, message, from_message, [recipients], fail_silently=False, html_message=message)
+    #send_mail(subject, message, from_message, [recipients], fail_silently=False, html_message=message)
+
+@receiver(post_save, sender=Estado_Producto)
+def enviar_notificacion_actualizacion_estado_producto(sender, instance, created, *args, **kwargs):
+    from_message = "oralvarez@gmail.com"
+    #instance.usuario = request.user
+    nombre_usuario = instance.usuario.username #User.objects.get(username=instance.usuario.username).first_name + " " + User.objects.get(username=instance.usuario.username).last_name
+    to_message = User.objects.get(username=instance.usuario.username).email
+
+    s_accion = Acciones_Estado.objects.get(pk=int(instance.accion))
+    s_estado_actual = ""
+
+    if s_accion.descripcion == "Asignar":
+        s_estado_actual = "Asignado"
+
+    if s_accion.descripcion == "Devolver":
+        s_estado_actual = "Devuelto"
+
+    if s_accion.descripcion == "Cerrar":
+        s_estado_actual = "Cerrado"
+
+    if s_accion.descripcion == "Cancelar":
+        s_estado_actual = "Cancelado"
+
+    recipients = []
+    for user in User.objects.filter(groups__name='Asignador'):
+        recipients.append(user.email)
+
+    for user in User.objects.filter(groups__name='Administradores'):
+        recipients.append(user.email)
+
+    p = Producto.objects.get(pk=instance.producto.id)
+
+    instance.estado_anterior = p.estado
+    p.estado = s_estado_actual
+    p.save()
+
+    instance.save()
+
+    subject = "Accion realizada en Servicio: " + str(p.consecutivo) + " "
+    message = render_to_string('tema3/correo.html', {'usuario': nombre_usuario, 'consecutivo': p.consecutivo})
+
+    send_mail(subject, message, from_message, [to_message], fail_silently=False, html_message=message)
+    #send_mail(subject, message, from_message, [recipients], fail_silently=False, html_message=message)

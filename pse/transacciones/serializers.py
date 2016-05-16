@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from models import Moneda, Pais, Departamento, Ciudad, Producto, Localizacion, TipoContrato, TipoUbicacion, TipoObjeto, Cliente, TipoProducto 
+from models import Moneda, Pais, Departamento, Ciudad, Producto, Localizacion, TipoContrato, TipoUbicacion, TipoObjeto, Cliente, TipoProducto, Anexo_Producto, Estado_Producto, Usuario_Localizacion, Acciones_Estado, Acciones_Sourcing
 
 
 class PaisSerializer(serializers.ModelSerializer):
@@ -57,6 +57,30 @@ class LocalizacionSerializer(serializers.ModelSerializer):
         model = Localizacion
         fields = ('id', 'cliente', 'identificacion', 'nombre', 'codigo', 'tipo', 'centro_costo', 'localizacion_padre')
 
+class Acciones_SourcingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Acciones_Sourcing
+        fields = ('id', 'descripcion')
+
+class Acciones_EstadoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Acciones_Estado
+        fields = ('id', 'descripcion')
+
+class Usuario_LocalizacionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Usuario_Localizacion
+        fields = ('id', 'localizacion', 'usuario', 'vigencia_fecha_desde', 'vigencia_fecha_hasta')
+
+class Anexo_ProductoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Anexo_Producto
+        fields = ('id', 'producto', 'usuario', 'anexo', 'fecha', 'descripcion')
+
+class Estado_ProductoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Estado_Producto
+        fields = ('id', 'producto', 'usuario', 'estado_anterior', 'accion', 'estado_actual', 'fecha', 'descripcion')
 
 class ProductoSerializer(serializers.ModelSerializer):
     class Meta:

@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_framework.filters',
     'quickstart',
     'transacciones',
 )
@@ -125,6 +126,14 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'oralvarez@gmail.com'
-EMAIL_HOST_PASSWORD = '##F3l1p301$2016$'
+EMAIL_HOST_PASSWORD = '##$F3l1p301$2016#'
 EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = 'oralvarez@gmail.com'
+
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_USE_TLS = True
+# EMAIL_HOST = 'smtpout.secureserver.net'
+# EMAIL_HOST_USER = 'no.reply@eamcys.com'
+# EMAIL_HOST_PASSWORD = 'No123'
+# EMAIL_PORT = 587
+# DEFAULT_FROM_EMAIL = 'no.reply@eamcys.com'

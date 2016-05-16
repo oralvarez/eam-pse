@@ -38,6 +38,11 @@ router.register(r'tipoobjeto', TipoObjetoViewSet)
 router.register(r'tipoubicacion', TipoUbicacionViewSet)
 router.register(r'tipoproducto', TipoProductoViewSet)
 
+router.register(r'anexoproducto', Anexo_ProductoViewSet)
+router.register(r'estadoproducto', Estado_ProductoViewSet)
+router.register(r'usuariolocalizacion', Usuario_LocalizacionViewSet)
+router.register(r'accionesestado', Acciones_EstadoViewSet)
+router.register(r'accionessourcing', Acciones_SourcingViewSet)
 
 urlpatterns = [
     url(r'^api/', include(router.urls)),

@@ -6,10 +6,10 @@ from django.views.generic.base import TemplateView
 
 from django.contrib.auth import login, logout
 from django.shortcuts import render
-from models import Moneda, Pais, Producto, Localizacion, Cliente, TipoContrato, TipoObjeto, TipoUbicacion, TipoProducto, Departamento, Ciudad
+from .models import *
 from rest_framework import viewsets
 from rest_framework.views import APIView
-from transacciones.serializers import  MonedaSerializer, DepartamentoSerializer, CiudadSerializer, PaisSerializer, ProductoSerializer, LocalizacionSerializer, ClienteSerializer, TipoContratoSerializer, TipoObjetoSerializer, TipoUbicacionSerializer, TipoProductoSerializer
+from .serializers import *
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -100,6 +100,53 @@ class ProductoViewSet(viewsets.ModelViewSet):
     """
     queryset = Producto.objects.all().order_by('-consecutivo')
     serializer_class = ProductoSerializer
+
+class ProductoViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = Producto.objects.all().order_by('-consecutivo')
+    serializer_class = ProductoSerializer
+
+#########################
+class Anexo_ProductoViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = Anexo_Producto.objects.all().order_by('-id')
+    serializer_class = Anexo_ProductoSerializer
+
+class Estado_ProductoViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = Estado_Producto.objects.all().order_by('-id')
+    serializer_class = Estado_ProductoSerializer
+
+class Usuario_LocalizacionViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = Usuario_Localizacion.objects.all().order_by('-id')
+    serializer_class = Usuario_LocalizacionSerializer
+
+
+class Acciones_EstadoViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = Acciones_Estado.objects.all().order_by('id')
+    serializer_class = Acciones_EstadoSerializer
+
+
+class Acciones_SourcingViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = Acciones_Sourcing.objects.all().order_by('id')
+    serializer_class = Acciones_SourcingSerializer
+
+#########################
 
 @api_view(['GET'])
 def index(request):

@@ -114,11 +114,21 @@
       <column name="name" sqlType="" precision="0" scale="-1" nullable="true" jdbcType="12"/>
       <column name="seq" sqlType="" precision="0" scale="-1" nullable="true" jdbcType="12"/>
     </table>
+    <table name="transacciones_acciones_estado" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="descripcion" sqlType="VARCHAR(100)" precision="0" scale="-1" nullable="true" jdbcType="12"/>
+      <primary-key columns="id"/>
+    </table>
+    <table name="transacciones_acciones_sourcing" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="descripcion" sqlType="VARCHAR(100)" precision="0" scale="-1" nullable="true" jdbcType="12"/>
+      <primary-key columns="id"/>
+    </table>
     <table name="transacciones_anexo_producto" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
       <column name="anexo" sqlType="VARCHAR(100)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
       <column name="fecha" sqlType="DATE" precision="0" scale="-1" nullable="false" jdbcType="12"/>
-      <column name="descripcion" sqlType="VARCHAR(500)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="descripcion" sqlType="VARCHAR(500)" precision="0" scale="-1" nullable="true" jdbcType="12"/>
       <column name="usuario_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
       <column name="producto_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
       <primary-key columns="id"/>
@@ -158,11 +168,11 @@
     </table>
     <table name="transacciones_estado_producto" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
-      <column name="estado_anterior" sqlType="VARCHAR(100)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
-      <column name="accion" sqlType="VARCHAR(100)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
-      <column name="estado_actual" sqlType="VARCHAR(100)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="estado_anterior" sqlType="VARCHAR(100)" precision="0" scale="-1" nullable="true" jdbcType="12"/>
+      <column name="accion" sqlType="VARCHAR(100)" precision="0" scale="-1" nullable="true" jdbcType="12"/>
+      <column name="estado_actual" sqlType="VARCHAR(100)" precision="0" scale="-1" nullable="true" jdbcType="12"/>
       <column name="fecha" sqlType="DATE" precision="0" scale="-1" nullable="false" jdbcType="12"/>
-      <column name="descripcion" sqlType="VARCHAR(500)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="descripcion" sqlType="VARCHAR(500)" precision="0" scale="-1" nullable="true" jdbcType="12"/>
       <column name="usuario_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
       <column name="producto_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
       <primary-key columns="id"/>

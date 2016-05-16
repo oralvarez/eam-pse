@@ -15,6 +15,11 @@ admin.site.register(Cliente)
 admin.site.register(Localizacion)
 admin.site.register(Usuario_Localizacion)
 
+admin.site.register(Anexo_Producto)
+admin.site.register(Estado_Producto)
+admin.site.register(Acciones_Sourcing)
+admin.site.register(Acciones_Estado)
+
 #no.reply@eamcys.com
 #No123
 

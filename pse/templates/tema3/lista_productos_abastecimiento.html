@@ -20,6 +20,7 @@
 			<tr>
 				<th>Consecutivo</th>
 				<th>Fecha de Registro</th>
+				<th>Tipo de Servicio</th>			
 				<th>Estado</th>
 				<th>Es Secreto?</th>
 				<th>Observaciones</th>
@@ -27,8 +28,9 @@
 			<tr ng-repeat="producto in productos | filter: search | orderBy: '-fecha_registro'">
 				<td><a href="/nav/abastecimiento/productos/detalle/{{producto.id}}">{{producto.consecutivo}}</td>
 				<td>{{producto.fecha_registro | date }}</td>
+				<td>{{producto.tipo_producto}}</td>
 				<td>{{producto.estado}}</td>
-				<td>{{producto.es_secreto}}</td>
+				<td><input type="checkbox" ng-model="producto.es_secreto" /></td>
 				<td>{{producto.observaciones}}</td>
 			</tr>				
 		</table>
