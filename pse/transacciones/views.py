@@ -194,6 +194,12 @@ def detalle_producto_abastecimiento(request, id):
     return HttpResponse(template.render(context, request))
 
 def agregar_producto_abastecimiento(request):
+    #for user in User.objects.filter(groups__name='Asignador'):
+    #    recipients.append(user.email)
+
+    #for user in User.objects.filter(groups__name='Administradores'):
+    #    recipients.append(user.email)
+
     template = loader.get_template('tema3/detalle_producto_abastecimiento.html')
     context = {
         'titulo': 'Nuevo Servicio',

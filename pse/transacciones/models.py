@@ -111,6 +111,7 @@ class Producto(models.Model):
     es_secreto = models.NullBooleanField()
     objeto = models.TextField(blank=True, null=True)
     localizacion = models.ForeignKey(Localizacion, blank=True, null=True)
+    #require OneToManyFields(Localizacion)
     observaciones = models.TextField(blank=True, null=True)
     numero_proceso = models.CharField(max_length=30, blank=True, null=True)
     nivel_inteligencia = models.CharField(max_length=30, blank=True, null=True)
