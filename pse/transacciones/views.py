@@ -15,6 +15,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .authentication import QuietBasicAuthentication
+from rest_framework import filters
+from rest_framework import generics
 
 # Create your views here.
 class PaisViewSet(viewsets.ModelViewSet):
@@ -130,6 +132,24 @@ class Usuario_LocalizacionViewSet(viewsets.ModelViewSet):
     queryset = Usuario_Localizacion.objects.all().order_by('-id')
     serializer_class = Usuario_LocalizacionSerializer
 
+class Usuario_LocalizacionList(generics.ListAPIView):
+    serializer_class = Usuario_LocalizacionSerializer
+
+    def get_queryset(self):
+        """
+        Optionally restricts the returned purchases to a given user,
+        by filtering against a `username` query parameter in the URL.
+        """
+        queryset = Usuario_Localizacion.objects.all()
+        username = self.request.query_params.get('username', None)
+        if username is not None:
+            queryset = queryset.filter(usuario=username)
+        return queryset
+
+# class Usuario_LocalizacionView(generics.ListAPIView):
+#     queryset = Usuario_Localizacion.objects.all()
+#     serializer = Usuario_LocalizacionSerializer
+#     filter_backends = (filters.DjangoFilterBackend,)
 
 class Acciones_EstadoViewSet(viewsets.ModelViewSet):
     """

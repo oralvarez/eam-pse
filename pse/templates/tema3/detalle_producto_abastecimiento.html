@@ -84,7 +84,7 @@
                 <div class="input-group">
 				   <input type="text" class="form-control" ng-model="Producto.localizacion" placeholder="Localizacion">
 				   <span class="input-group-btn">
-						<button class="btn btn-primary" type="button" <!--ng-click="buscarLocalizacion()" -->Buscar</button>
+						<button class="btn btn-primary" type="button" ng-click="buscarLocalizacion()">Buscar</button>
 				   </span>
 				</div>
             </div>
@@ -384,8 +384,23 @@
       
       <div class="form-group" >
         <label for="Localizacion.codigo">Localizacion</label>
-        <textarea class="form-control" id="Localizacion.codigo" ng-model="Localizacion.descripcion" placeholder="Descripcion"></textarea>
-      </div>
+        <!-- /filtros/localizaciones/ -->
+		<table class="table table-striped" id="table1">
+			<tr>
+				<th>Localizacion</th>
+				<th>Cliente</th>
+				<th>Usuario</th>			
+				<th>Vigencia desde</th>
+				<th>Vigencia hasta</th>
+			</tr>
+			<tr ng-repeat="localizacion in localizaciones | filter: search | orderBy: '-id'">
+				<td>{{localizacion.localizacion}}</td>
+				<td>{{localizacion.cliente}}</td>
+				<td>{{localizacion.usuario}}</td>
+				<td>{{localizacion.vigencia_fecha_desde | date }}</td>
+				<td>{{localizacion.vigencia_fecha_hasta | date }}</td>
+			</tr>				
+		</table>
 <div class="panel panel-footer">
       <div class="row">
 		<div class="col-lg-12">
@@ -478,7 +493,14 @@
 		q_12.$promise.then(function(data){
 			$scope.acciones_asignacion = data.results;
 		});	
-	
+		
+		
+	    $http.get("/filtros/localizaciones/?username=" + current_user_id)
+		.then(function(response) {
+			console.log(response.data);
+			$scope.localizaciones = response.data.results;
+		});
+		
 		//$scope.acciones_asignacion = {"Asignar":'Asignar',"Devolver":'Devolver',"Cerrar":'Cerrar',"Cancelar":'Cancelar'};
 		//$scope.acciones_asignacion = {1:'Asignar',2:'Devolver',3:'Cerrar',4:'Cancelar'};
 

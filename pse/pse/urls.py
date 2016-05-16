@@ -57,5 +57,6 @@ urlpatterns = [
     url(r'^nav/abastecimiento/productos/(?P<tipo>[0-9])/$', lista_productos_abastecimiento, name='lista_productos_abastecimiento'),
     url(r'^nav/abastecimiento/productos/detalle/(?P<id>\d+)$', detalle_producto_abastecimiento, name='detalle_producto_abastecimiento'),
     url(r'^nav/abastecimiento/productos/nuevo/$', agregar_producto_abastecimiento, name='agregar_producto_abastecimiento'),
+    url(r'^filtros/localizaciones/$', Usuario_LocalizacionList.as_view()),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
