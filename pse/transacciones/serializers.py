@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from models import Moneda, Pais, Departamento, Ciudad, Producto, Localizacion, TipoContrato, TipoUbicacion, TipoObjeto, Cliente, TipoProducto, Anexo_Producto, Estado_Producto, Usuario_Localizacion, Acciones_Estado, Acciones_Sourcing
+from models import Moneda, Pais, Departamento, Ciudad, Producto, Localizacion, TipoContrato, TipoUbicacion, TipoObjeto, Cliente, TipoProducto, Anexo_Producto, Estado_Producto, Usuario_Cliente, Acciones_Estado, Acciones_Sourcing
 
 
 class PaisSerializer(serializers.ModelSerializer):
@@ -67,10 +67,10 @@ class Acciones_EstadoSerializer(serializers.ModelSerializer):
         model = Acciones_Estado
         fields = ('id', 'descripcion')
 
-class Usuario_LocalizacionSerializer(serializers.ModelSerializer):
+class Usuario_ClienteSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Usuario_Localizacion
-        fields = ('id', 'localizacion', 'usuario', 'vigencia_fecha_desde', 'vigencia_fecha_hasta')
+        model = Usuario_Cliente
+        fields = ('id', 'cliente', 'usuario', 'vigencia_fecha_desde', 'vigencia_fecha_hasta')
 
 class Anexo_ProductoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -85,7 +85,7 @@ class Estado_ProductoSerializer(serializers.ModelSerializer):
 class ProductoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Producto
-        fields = ('id', 'consecutivo', 'fecha_registro', 'estado', 'usuario', 'fecha_requerido', 'es_secreto', 'objeto', 'localizacion', 'observaciones', 'numero_proceso', 'nivel_inteligencia', 'descripcion_bien_servicio', 'tipo_ubicacion' , 'proveedores_sugeridos', 'numero_contrato', 'numero_requerimiento', 'valor', 'moneda', 'fecha_inicio', 'fecha_terminacion', 'numero_contrato_marco', 'tipo_contrato', 'tipo_contrato_cual', 'numero_pedido_ot_od_os', 'numero_orden_compra', 'nit', 'razon_social', 'numero_consecutivo', 'tipo_producto')
+        fields = ('id', 'consecutivo', 'fecha_registro', 'estado', 'usuario', 'fecha_requerido', 'es_secreto', 'objeto', 'observaciones', 'numero_proceso', 'nivel_inteligencia', 'descripcion_bien_servicio', 'tipo_ubicacion' , 'proveedores_sugeridos', 'numero_contrato', 'numero_requerimiento', 'valor', 'moneda', 'fecha_inicio', 'fecha_terminacion', 'numero_contrato_marco', 'tipo_contrato', 'tipo_contrato_cual', 'numero_pedido_ot_od_os', 'numero_orden_compra', 'nit', 'razon_social', 'numero_consecutivo', 'tipo_producto')
 
             # def validate(self, data):
     #     """

@@ -13,7 +13,7 @@ admin.site.register(TipoUbicacion)
 admin.site.register(TipoObjeto)
 admin.site.register(Cliente)
 admin.site.register(Localizacion)
-admin.site.register(Usuario_Localizacion)
+admin.site.register(Usuario_Cliente)
 
 admin.site.register(Anexo_Producto)
 admin.site.register(Estado_Producto)

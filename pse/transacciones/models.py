@@ -110,7 +110,7 @@ class Producto(models.Model):
     fecha_requerido = models.DateField(auto_now_add=True, blank=True, null=True)
     es_secreto = models.NullBooleanField()
     objeto = models.TextField(blank=True, null=True)
-    localizacion = models.ForeignKey(Localizacion, blank=True, null=True)
+    #localizacion = models.ForeignKey(Localizacion, blank=True, null=True)
     #require OneToManyFields(Localizacion)
     observaciones = models.TextField(blank=True, null=True)
     numero_proceso = models.CharField(max_length=30, blank=True, null=True)
@@ -161,14 +161,14 @@ class Estado_Producto(models.Model):
         return '%s - %s - %s - %s - %s - %s - %s' % (self.producto, self.usuario, self.estado_anterior, self.accion, self.estado_actual, self.fecha, self.descripcion)
 
 
-class Usuario_Localizacion(models.Model):
-    localizacion = models.ForeignKey(Localizacion)
+class Usuario_Cliente(models.Model):
+    cliente = models.ForeignKey(Cliente)
     usuario = models.ForeignKey(User)
     vigencia_fecha_desde = models.DateField()
     vigencia_fecha_hasta = models.DateField()
 
     def __unicode__(self):
-        return '%s - %s - %s - %s' % (self.localizacion, self.usuario, self.vigencia_fecha_desde, self.vigencia_fecha_hasta)
+        return '%s - %s - %s - %s' % (self.cliente, self.usuario, self.vigencia_fecha_desde, self.vigencia_fecha_hasta)
 
 class Acciones_Estado(models.Model):
     descripcion = models.CharField(max_length=100, blank=True, null=True)
@@ -236,7 +236,7 @@ def enviar_notificacion_actualizacion_estado_producto(sender, instance, created,
     nombre_usuario = instance.usuario.username #User.objects.get(username=instance.usuario.username).first_name + " " + User.objects.get(username=instance.usuario.username).last_name
     to_message = User.objects.get(username=instance.usuario.username).email
 
-    s_accion = Acciones_Estado.objects.get(pk=int(instance.accion))
+    s_accion = instance.accion #Acciones_Estado.objects.get(pk=int(instance.accion))
     s_estado_actual = ""
 
     if s_accion.descripcion == "Asignar":

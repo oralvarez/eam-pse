@@ -125,30 +125,30 @@ class Estado_ProductoViewSet(viewsets.ModelViewSet):
     queryset = Estado_Producto.objects.all().order_by('-id')
     serializer_class = Estado_ProductoSerializer
 
-class Usuario_LocalizacionViewSet(viewsets.ModelViewSet):
+class Usuario_ClienteViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
-    queryset = Usuario_Localizacion.objects.all().order_by('-id')
-    serializer_class = Usuario_LocalizacionSerializer
+    queryset = Usuario_Cliente.objects.all().order_by('-id')
+    serializer_class = Usuario_ClienteSerializer
 
-class Usuario_LocalizacionList(generics.ListAPIView):
-    serializer_class = Usuario_LocalizacionSerializer
+class Usuario_ClienteList(generics.ListAPIView):
+    serializer_class = Usuario_ClienteSerializer
 
     def get_queryset(self):
         """
         Optionally restricts the returned purchases to a given user,
         by filtering against a `username` query parameter in the URL.
         """
-        queryset = Usuario_Localizacion.objects.all()
+        queryset = Usuario_Cliente.objects.all()
         username = self.request.query_params.get('username', None)
         if username is not None:
             queryset = queryset.filter(usuario=username)
         return queryset
 
-# class Usuario_LocalizacionView(generics.ListAPIView):
-#     queryset = Usuario_Localizacion.objects.all()
-#     serializer = Usuario_LocalizacionSerializer
+# class Usuario_ClienteView(generics.ListAPIView):
+#     queryset = Usuario_Cliente.objects.all()
+#     serializer = Usuario_ClienteSerializer
 #     filter_backends = (filters.DjangoFilterBackend,)
 
 class Acciones_EstadoViewSet(viewsets.ModelViewSet):
@@ -170,9 +170,11 @@ class Acciones_SourcingViewSet(viewsets.ModelViewSet):
 
 @api_view(['GET'])
 def index(request):
+
     template = loader.get_template('tema3/index.html')
     context = {
         'late': 1,
+        'user' : request.user,
     }
     return HttpResponse(template.render(context, request))
 
@@ -223,5 +225,10 @@ class OnePageAppView(TemplateView):
 
 def login(request):
     template = loader.get_template("tema3/login.html")
+    context = {}
+    return HttpResponse(template.render(context, request))
+
+def logout(request):
+    template = loader.get_template("tema3/logout.html")
     context = {}
     return HttpResponse(template.render(context, request))

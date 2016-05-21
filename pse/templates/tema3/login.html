@@ -34,35 +34,29 @@
 
 {% block js %}
 <script>
-	app.controller('loginController',function($scope, $http, $q, $window, 'ngCookies') {
+	app.controller('loginController', function($scope, $http, $q, $window) {
         $scope.submit = (function(){
-            console.log($scope.usuario);
+            //console.log($scope.usuario);
             var deferred = $q.defer();
-            $http.post('/token-auth/', { "username":$scope.usuario.username,  "password":$scope.usuario.password }).then(
-  function (response) {
-    var token = response.data.token;
-    var username = response.data.username;
-      console.log(token);
-      console.log(response.data);
+            $http.post('/rest-auth/login/', { "username":$scope.usuario.username,  "password":$scope.usuario.password }).then(
+			  function (response) {
+				var token = response.data.key;
+				var username = response.data.username;
+				  console.log(token);
+				  console.log(response.data);
 
-    if (token) {
-      $window.localStorage.token = token;
-        console.log($window.localStorage.token);
-
-      //$window.localStorage.username = username;
-      deferred.resolve(true);
-    } else {
-      deferred.reject('Invalid data received from server');
-    }
-  },
-  function (response) {
-    deferred.reject(response.data.error);
-  }
-);
-return deferred.promise;
-
-			//console.log(xe);
-        });
+				if (token) {
+				  $window.localStorage.token = token;
+					//console.log($window.localStorage.token);
+					$window.location.href = '/';
+				  //$window.localStorage.username = username;
+				  //deferred.resolve(true);
+				} else {
+				  //deferred.reject('Invalid data received from server');
+				}
+				
+			});
+	    });
 	});
 </script>
 {% endblock js %}

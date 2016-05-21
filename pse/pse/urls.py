@@ -40,23 +40,22 @@ router.register(r'tipoproducto', TipoProductoViewSet)
 
 router.register(r'anexoproducto', Anexo_ProductoViewSet)
 router.register(r'estadoproducto', Estado_ProductoViewSet)
-router.register(r'usuariolocalizacion', Usuario_LocalizacionViewSet)
+router.register(r'usuariocliente', Usuario_ClienteViewSet)
 router.register(r'accionesestado', Acciones_EstadoViewSet)
 router.register(r'accionessourcing', Acciones_SourcingViewSet)
 
 urlpatterns = [
     url(r'^api/', include(router.urls)),
-    #url(r'^', OnePageAppView.as_view(), name='home'),
-    #url(r'^api/auth/$', transacciones.views.AuthView.as_view(), name='authenticate')
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^token-auth/$', 'rest_framework.authtoken.views.obtain_auth_token'),
+    #url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^rest-auth/', include('rest_auth.urls')),
+    url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
     url(r'^login/$', login, name="login"),
-    url(r'^api/auth/$', AuthView.as_view(), name='authenticate'),
+    url(r'^logout/$', logout, name="logout"),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', index, name='index'),
     url(r'^nav/abastecimiento/productos/(?P<tipo>[0-9])/$', lista_productos_abastecimiento, name='lista_productos_abastecimiento'),
     url(r'^nav/abastecimiento/productos/detalle/(?P<id>\d+)$', detalle_producto_abastecimiento, name='detalle_producto_abastecimiento'),
     url(r'^nav/abastecimiento/productos/nuevo/$', agregar_producto_abastecimiento, name='agregar_producto_abastecimiento'),
-    url(r'^filtros/localizaciones/$', Usuario_LocalizacionList.as_view()),
+    url(r'^filtros/localizaciones/$', Usuario_ClienteList.as_view()),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
