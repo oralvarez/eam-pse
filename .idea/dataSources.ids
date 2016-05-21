@@ -310,7 +310,6 @@
       <column name="numero_orden_compra" sqlType="VARCHAR(50)" precision="0" scale="-1" nullable="true" jdbcType="12"/>
       <column name="nit" sqlType="VARCHAR(20)" precision="0" scale="-1" nullable="true" jdbcType="12"/>
       <column name="razon_social" sqlType="VARCHAR(200)" precision="0" scale="-1" nullable="true" jdbcType="12"/>
-      <column name="localizacion_id" sqlType="INTEGER" precision="0" scale="-1" nullable="true" jdbcType="4"/>
       <column name="moneda_id" sqlType="INTEGER" precision="0" scale="-1" nullable="true" jdbcType="4"/>
       <column name="tipo_contrato_id" sqlType="INTEGER" precision="0" scale="-1" nullable="true" jdbcType="4"/>
       <column name="tipo_ubicacion_id" sqlType="INTEGER" precision="0" scale="-1" nullable="true" jdbcType="4"/>
@@ -325,13 +324,11 @@
       <foreign-key name="#FAKE_transacciones_producto_3" columns="tipo_ubicacion_id" ref-table="transacciones_tipoubicacion" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
       <foreign-key name="#FAKE_transacciones_producto_4" columns="tipo_contrato_id" ref-table="transacciones_tipocontrato" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
       <foreign-key name="#FAKE_transacciones_producto_5" columns="moneda_id" ref-table="transacciones_moneda" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
-      <foreign-key name="#FAKE_transacciones_producto_6" columns="localizacion_id" ref-table="transacciones_localizacion" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
       <index name="transacciones_producto_ab4462f4" unique="true" columns="tipo_producto_id"/>
       <index name="transacciones_producto_abfe0f96" unique="true" columns="usuario_id"/>
       <index name="transacciones_producto_5debff4e" unique="true" columns="tipo_ubicacion_id"/>
       <index name="transacciones_producto_0abb60f9" unique="true" columns="tipo_contrato_id"/>
       <index name="transacciones_producto_fabc26c3" unique="true" columns="moneda_id"/>
-      <index name="transacciones_producto_6f44f644" unique="true" columns="localizacion_id"/>
     </table>
     <table name="transacciones_tipocontrato" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
@@ -357,17 +354,17 @@
       <column name="descripcion" sqlType="TEXT" precision="0" scale="-1" nullable="false" jdbcType="12"/>
       <primary-key columns="id"/>
     </table>
-    <table name="transacciones_usuario_localizacion" schema="" catalog="" type="TABLE">
+    <table name="transacciones_usuario_cliente" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
       <column name="vigencia_fecha_desde" sqlType="DATE" precision="0" scale="-1" nullable="false" jdbcType="12"/>
       <column name="vigencia_fecha_hasta" sqlType="DATE" precision="0" scale="-1" nullable="false" jdbcType="12"/>
-      <column name="localizacion_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="cliente_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
       <column name="usuario_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
       <primary-key columns="id"/>
-      <foreign-key name="#FAKE_transacciones_usuario_localizacion_1" columns="usuario_id" ref-table="auth_user" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
-      <foreign-key name="#FAKE_transacciones_usuario_localizacion_2" columns="localizacion_id" ref-table="transacciones_localizacion" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
-      <index name="transacciones_usuario_localizacion_abfe0f96" unique="true" columns="usuario_id"/>
-      <index name="transacciones_usuario_localizacion_6f44f644" unique="true" columns="localizacion_id"/>
+      <foreign-key name="#FAKE_transacciones_usuario_cliente_1" columns="usuario_id" ref-table="auth_user" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_transacciones_usuario_cliente_2" columns="cliente_id" ref-table="transacciones_cliente" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="transacciones_usuario_cliente_abfe0f96" unique="true" columns="usuario_id"/>
+      <index name="transacciones_usuario_cliente_4a860110" unique="true" columns="cliente_id"/>
     </table>
     <table name="transacciones_usuariolocalizacion" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>

@@ -430,7 +430,7 @@
 		
 	}
 	
-	app.controller('editController',function($scope, $http, ProductoService, UserService, TipoContratoService, TipoUbicacionService, TipoObjetoService, TipoProductoService, MonedaService, PaisService, DepartamentoService, CiudadService, ClienteService, LocalizacionService, AccionesEstadoService, AnexoProductoService, EstadoProductoService, UsuarioLocalizacionService, AccionesSourcingService) {
+	app.controller('editController',function($scope, $http, $window, ProductoService, UserService, TipoContratoService, TipoUbicacionService, TipoObjetoService, TipoProductoService, MonedaService, PaisService, DepartamentoService, CiudadService, ClienteService, LocalizacionService, AccionesEstadoService, AnexoProductoService, EstadoProductoService, UsuarioLocalizacionService, AccionesSourcingService) {
 		
         var q_01 = UserService.query();
 		var q_02 = TipoContratoService.query();
@@ -574,6 +574,8 @@
 					  data : $scope.Producto,
 					}).then(function successCallback(response) {
 						//alert("Correct");
+						$window.location.href = "/nav/abastecimiento/productos/detalle/" + response.data.id;
+						//console.log(response.data.id);
 					  }, function errorCallback(response) {
 						$scope.errors = response.data;
 				});
