@@ -12,14 +12,12 @@ admin.site.register(TipoContrato)
 admin.site.register(TipoUbicacion)
 admin.site.register(TipoObjeto)
 admin.site.register(Cliente)
-admin.site.register(Localizacion)
+admin.site.register(Dependencia)
 admin.site.register(Usuario_Cliente)
 
 admin.site.register(Anexo_Producto)
 admin.site.register(Estado_Producto)
 admin.site.register(Acciones_Sourcing)
 admin.site.register(Acciones_Estado)
-
-#no.reply@eamcys.com
-#No123
+admin.site.register(Detalle_Servicio)
 

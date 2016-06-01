@@ -32,7 +32,7 @@ router.register(r'departamento', DepartamentoViewSet)
 router.register(r'ciudad', CiudadViewSet)
 router.register(r'producto', ProductoViewSet)
 router.register(r'cliente', ClienteViewSet)
-router.register(r'localizacion', LocalizacionViewSet)
+router.register(r'dependencia', DependenciaViewSet)
 router.register(r'tipocontrato', TipoContratoViewSet)
 router.register(r'tipoobjeto', TipoObjetoViewSet)
 router.register(r'tipoubicacion', TipoUbicacionViewSet)
@@ -43,19 +43,26 @@ router.register(r'estadoproducto', Estado_ProductoViewSet)
 router.register(r'usuariocliente', Usuario_ClienteViewSet)
 router.register(r'accionesestado', Acciones_EstadoViewSet)
 router.register(r'accionessourcing', Acciones_SourcingViewSet)
+router.register(r'detallesolicitudproducto', Detalle_ServicioViewSet)
+#router.register(r'productolist', ProductoListView)
 
 urlpatterns = [
     url(r'^api/', include(router.urls)),
+    #url(r'^api/productolist/', ProductoListView),
     #url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
-    url(r'^login/$', login, name="login"),
+    url(r'^dashboard/$', index, name="index"),
     url(r'^logout/$', logout, name="logout"),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', index, name='index'),
+    url(r'^$', login, name="login"),
     url(r'^nav/abastecimiento/productos/(?P<tipo>[0-9])/$', lista_productos_abastecimiento, name='lista_productos_abastecimiento'),
     url(r'^nav/abastecimiento/productos/detalle/(?P<id>\d+)$', detalle_producto_abastecimiento, name='detalle_producto_abastecimiento'),
     url(r'^nav/abastecimiento/productos/nuevo/$', agregar_producto_abastecimiento, name='agregar_producto_abastecimiento'),
-    url(r'^filtros/localizaciones/$', Usuario_ClienteList.as_view()),
-
+    #url(r'^filtros/dependencias/$', Usuario_ClienteList.as_view()),
+    url(r'^filtros/dependencias/$', DependenciasDetalleServicioList.as_view()),
+    url(r'^filtros/productos/$', ProductoListView.as_view()),
+    url(r'^filtros/consultas/$', ProductoConsultaListView.as_view()),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

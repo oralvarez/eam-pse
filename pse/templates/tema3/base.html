@@ -55,22 +55,20 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/">Portal de Servicios Electrónicos PSE - EAM</a>
+                <a class="navbar-brand" href="/dashboard/">Portal de Servicios Electrónicos PSE - EAM</a>
             </div>
             <!-- /.navbar-header -->
 
             <ul class="nav navbar-top-links navbar-right">
-                <li class="dropdown">
+                <li class="dropdown" ng-controller="logOutController">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                        <i class="fa fa-user fa-fw"></i> {{ request.user }} <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
                         <li><a href="#"><i class="fa fa-user fa-fw"></i> Perfil de Usuario</a>
                         </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Configuración</a>
-                        </li>
                         <li class="divider"></li>
-                        <li><a href="/logout/"><i class="fa fa-sign-out fa-fw"></i> Cerrar sesión</a>
+                        <li><a href="#" ng-click="logout()" confirm="Esta seguro de querer cerrar sesion?"><i class="fa fa-sign-out fa-fw"></i> Cerrar sesión</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -89,7 +87,7 @@
 														
                         </li>
                         <li>
-                            <a href="/"><i class="fa fa-dashboard fa-fw"></i> Panel de Control</a>
+                            <a href="/dashboard/"><i class="fa fa-dashboard fa-fw"></i> Panel de Control</a>
 							<li>
 								<a href="#"><i class="fa fa-sitemap fa-fw"></i> Módulos<span class="fa arrow"></span></a>
 								<ul class="nav nav-second-level">									
@@ -227,7 +225,15 @@
     <script src="/static/tema3/js/angular/angular.js"></script>
 	  <!-- AngularJS Resource-->
     <script src="/static/tema3/js/angular-resource/angular-resource.js"></script>
-  
+	  <!-- AngularJS FileUpload-->
+    <script src="/static/tema3/js/angular-file-upload/dist/angular-file-upload.js"></script>
+
+  	  <!-- AngularJS Confirm-->
+    <!--
+    <script src="/static/tema3/bower_components/ui.bootstrap/ui-bootstrap-tpls-1.3.3.min.js"></script>
+    <script src="/static/tema3/bower_components/angular-confirm-modal/angular-confirm.min.js"></script>
+    -->
+
 	<!-- Scripts basicos -->
     <script src="/static/tema3/js/app.js"></script>
 	<script>	
@@ -239,6 +245,43 @@
     <script src="/static/tema3/js/services.js"></script>
     <script src="/static/tema3/js/controllers.js"></script>
     <script src="/static/tema3/js/utils.js"></script>
+    <!-- Otros scripts -->
+    <script>
+
+	function AddMasks(){
+		$("input[placeholder^='Fecha']").datepicker();
+		$("input[placeholder^='Valor']").spinner({
+			  step: 0.01,
+			  numberFormat: "n"
+		});
+	}
+
+	$( document ).ready(function() {
+		//console.log($("input")); //.attr("ng-model", "producto.fecha_*"));
+		$("#cmb_tipo_producto").change(function () {
+			AddMasks();
+		});
+
+		AddMasks();
+
+		// Ocultar los botones que no aplican
+		if (idx == 0)
+		{
+			$("input[admin_action^='Si']").hide();
+			$("#usuario").val(current_user_name);
+			$("#usuario_id").val(current_user_id);
+
+			//$("input[pot-data^='tipo_actividad']").html($("#cmb_tipo_producto").text());
+		}
+		else
+		{
+			$("#cmb_tipo_producto").prop('disabled', 'disabled');
+			$("#cmb_usuario").prop('disabled', 'disabled');
+			$("input[admin_action^='Si']").show();
+			$("div[pot-data^='tipo_actividad']").html("<h3>" + $("#cmb_tipo_producto option:selected").text() + "</h3>");
+		}
+	});
+</script>
 	{% block js %}{% endblock %}
 </body>
 

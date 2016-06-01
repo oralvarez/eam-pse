@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from models import Moneda, Pais, Departamento, Ciudad, Producto, Localizacion, TipoContrato, TipoUbicacion, TipoObjeto, Cliente, TipoProducto, Anexo_Producto, Estado_Producto, Usuario_Cliente, Acciones_Estado, Acciones_Sourcing
+from models import Moneda, Pais, Departamento, Ciudad, Producto, Dependencia, TipoContrato, TipoUbicacion, TipoObjeto, Cliente, TipoProducto, Anexo_Producto, Estado_Producto, Usuario_Cliente, Acciones_Estado, Acciones_Sourcing, Detalle_Servicio
 
 
 class PaisSerializer(serializers.ModelSerializer):
@@ -48,14 +48,15 @@ class PaisSerializer(serializers.ModelSerializer):
         fields = ('id', 'nombre', 'codigo_iso')
 
 class ClienteSerializer(serializers.ModelSerializer):
+    logo = serializers.FileField(max_length=None, use_url=True)
     class Meta:
         model = Cliente
         fields = ('id', 'nit', 'razon_social', 'direccion', 'ciudad', 'telefono', 'datos_contacto', 'logo')
 
-class LocalizacionSerializer(serializers.ModelSerializer):
+class DependenciaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Localizacion
-        fields = ('id', 'cliente', 'identificacion', 'nombre', 'codigo', 'tipo', 'centro_costo', 'localizacion_padre')
+        model = Dependencia
+        fields = ('id', 'cliente', 'identificacion', 'nombre', 'codigo', 'tipo', 'dependencia_padre')
 
 class Acciones_SourcingSerializer(serializers.ModelSerializer):
     class Meta:
@@ -73,6 +74,8 @@ class Usuario_ClienteSerializer(serializers.ModelSerializer):
         fields = ('id', 'cliente', 'usuario', 'vigencia_fecha_desde', 'vigencia_fecha_hasta')
 
 class Anexo_ProductoSerializer(serializers.ModelSerializer):
+    anexo = serializers.FileField(max_length=None, use_url=True)
+
     class Meta:
         model = Anexo_Producto
         fields = ('id', 'producto', 'usuario', 'anexo', 'fecha', 'descripcion')
@@ -82,10 +85,29 @@ class Estado_ProductoSerializer(serializers.ModelSerializer):
         model = Estado_Producto
         fields = ('id', 'producto', 'usuario', 'estado_anterior', 'accion', 'estado_actual', 'fecha', 'descripcion')
 
+class Detalle_ServicioSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Detalle_Servicio
+        fields = ('id', 'producto', 'dependencia', 'porcentaje', 'funcionario_autorizado')
+
+class ProductoListSerializer(serializers.Serializer):
+    #item = serializers.CharField()
+    tipo_producto = serializers.CharField(required=False)
+    estado = serializers.CharField(required=False)
+    usuario = serializers.CharField(required=False)
+    es_secreto = serializers.CharField(required=False)
+    asignador = serializers.CharField(required=False)
+    gestor_asignado = serializers.CharField(required=False)
+    nit = serializers.CharField(required=False)
+    fecha_registro = serializers.DateTimeField(required=False)
+    conteo = serializers.IntegerField()
+
+
 class ProductoSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Producto
-        fields = ('id', 'consecutivo', 'fecha_registro', 'estado', 'usuario', 'fecha_requerido', 'es_secreto', 'objeto', 'observaciones', 'numero_proceso', 'nivel_inteligencia', 'descripcion_bien_servicio', 'tipo_ubicacion' , 'proveedores_sugeridos', 'numero_contrato', 'numero_requerimiento', 'valor', 'moneda', 'fecha_inicio', 'fecha_terminacion', 'numero_contrato_marco', 'tipo_contrato', 'tipo_contrato_cual', 'numero_pedido_ot_od_os', 'numero_orden_compra', 'nit', 'razon_social', 'numero_consecutivo', 'tipo_producto')
+        fields = ('id', 'consecutivo', 'fecha_registro', 'estado', 'usuario', 'fecha_requerido', 'es_secreto', 'objeto', 'observaciones', 'numero_proceso', 'nivel_inteligencia', 'descripcion_bien_servicio', 'tipo_ubicacion' , 'proveedores_sugeridos', 'numero_contrato', 'numero_requerimiento', 'valor', 'moneda', 'fecha_inicio', 'fecha_terminacion', 'numero_contrato_marco', 'tipo_contrato', 'tipo_contrato_cual', 'numero_pedido_ot_od_os', 'numero_orden_compra', 'nit', 'razon_social', 'numero_consecutivo', 'tipo_producto', 'gestor_asignado', 'asignador')
 
             # def validate(self, data):
     #     """

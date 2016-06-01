@@ -96,8 +96,8 @@ app.factory('ClienteService', function($resource) {
 	}); // Note the full endpoint address
 });
 
-app.factory('LocalizacionService', function($resource) {
-  return $resource('/api/localizacion/:id', {id: '@id'}, 
+app.factory('DependenciaService', function($resource) {
+  return $resource('/api/dependencia/:id', {id: '@id'},
 	{ query	: {method: 'GET', isArray: false}, 
 	  post	: {method: 'POST'},
       update: {method: 'PUT'},
@@ -123,8 +123,8 @@ app.factory('EstadoProductoService', function($resource) {
 	}); // Note the full endpoint address
 });
 
-app.factory('UsuarioLocalizacionService', function($resource) {
-  return $resource('/api/usuariolocalizacion/:id', {id: '@id'},
+app.factory('UsuarioDependenciaService', function($resource) {
+  return $resource('/api/usuarioDependencia/:id', {id: '@id'},
 	{ query	: {method: 'GET', isArray: false},
 	  post	: {method: 'POST'},
       update: {method: 'PUT'},
@@ -150,11 +150,37 @@ app.factory('AccionesSourcingService', function($resource) {
 	}); // Note the full endpoint address
 });
 
+app.factory('DetalleServicioService', function($resource) {
+  return $resource('/api/detallesolicitudproducto/:id', {id: '@id'},
+	{ query	: {method: 'GET', isArray: false},
+	  post	: {method: 'POST'},
+      update: {method: 'PUT'},
+      remove: {method: 'DELETE'}
+	}); // Note the full endpoint address
+});
+
 /*
 
     "anexoproducto": "http://127.0.0.1:8000/api/anexoproducto/",
     "estadoproducto": "http://127.0.0.1:8000/api/estadoproducto/",
-    "usuariolocalizacion": "http://127.0.0.1:8000/api/usuariolocalizacion/",
+    "usuarioDependencia": "http://127.0.0.1:8000/api/usuarioDependencia/",
     "accionesestado": "http://127.0.0.1:8000/api/accionesestado/",
     "accionessourcing": "http://127.0.0.1:8000/api/accionessourcing/"
  */
+app.service('fileUploadService', ['$http', function ($http) {
+            this.uploadFileToUrl = function(file, uploadUrl){
+               var fd = new FormData();
+               fd.append('file', file);
+
+               $http.post(uploadUrl, fd, {
+                  transformRequest: angular.identity,
+                  headers: {'Content-Type': undefined}
+               })
+
+               .success(function(){
+               })
+
+               .error(function(){
+               });
+            }
+         }]);

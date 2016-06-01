@@ -16,12 +16,12 @@
 
     <form class="form" role="form" ng-submit="guardarProducto()">
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-sm-12">
                 <p ng-repeat="(name, errs) in errors" class="alert alert-danger"><strong>{{ name }}</strong>: {{ errs.join(', ') }}</p>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4">
+            <div class="col-sm-4">
                 <div class="form-group">
 					<label>Tipo de Servicio</label>
                     <select ng-model="Producto.tipo_producto" class="form-control" ng-options="tipoproducto.id as tipoproducto.nombre for tipoproducto in tipoproductos" id="cmb_tipo_producto">
@@ -29,13 +29,13 @@
                 </div>
             </div>
 
-            <div class="col-lg-4">
+            <div class="col-sm-4">
                 <div class="form-group">
                     <label>Consecutivo</label>
                     <input type="text" class="form-control" ng-model="Producto.consecutivo" placeholder="Consecutivo" disabled>
                 </div>
             </div>
-			<div class="col-lg-4">
+			<div class="col-sm-4">
                 <div class="form-group">
 					<label>Estado</label>
                     <input type="text" class="form-control" ng-model="Producto.estado" placeholder="Estado" disabled>
@@ -43,27 +43,31 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4">
+            <div class="col-sm-4">
                 <div class="form-group">
-					<label>Fecha de Requerido</label>
+					<label>Fecha Registro</label>
                     <input type="text" class="form-control" ng-model="Producto.fecha_registro" placeholder="Fecha de Registro" disabled>
                 </div>
             </div>            
-            <div class="col-lg-4">
+            <div class="col-sm-4">
                 <div class="form-group">
-					<label>Usuario asignado</label>
+					<label>Usuario</label>
+					<input id="usuario" type="text" class="form-control" placeholder="Usuario" disabled>
+					<hidden id="usuario_id" ng-model="Producto.usuario" />
+					<!--
                     <select ng-model="Producto.usuario" class="form-control" ng-options="user.id as user.username for user in users" id="cmb_usuario">
                     </select>
+					-->
                 </div>
             </div>
-			<div class="col-lg-2">
+			<div class="col-sm-2">
                 <div class="form-group">
                     <label>¿Es Secreto?:</label><input type="checkbox" class="checkbox-info" ng-model="Producto.es_secreto" placeholder="Es Secreto?">
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4">
+            <div class="col-sm-4">
                 <div class="form-group" ng-if="Producto.tipo_producto == '5' || Producto.tipo_producto == '6' || Producto.tipo_producto == '2' || Producto.tipo_producto == '1'">
                     <label>Fecha de Requerido</label>
                     <input type="text" class="form-control" ng-model="Producto.fecha_requerido" placeholder="Fecha de Requerido">
@@ -71,7 +75,7 @@
             </div>
 		</div>
         <div class="row">
-            <div class="col-lg-12" ng-if="Producto.tipo_producto == '5' || Producto.tipo_producto == '10' || Producto.tipo_producto == '1' || Producto.tipo_producto == '7'">
+            <div class="col-sm-12" ng-if="Producto.tipo_producto == '5' || Producto.tipo_producto == '10' || Producto.tipo_producto == '1' || Producto.tipo_producto == '7'">
                 <div class="form-group">
                     <label>Objeto</label>
                     <textarea class="form-control" ng-model="Producto.objeto" placeholder="Objeto" ></textarea>
@@ -79,18 +83,26 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-6">
-			   <label>Localizacion</label>
+            <div class="col-sm-12">
+			   <label>Asignacion</label>
                 <div class="input-group">
-				   <input type="text" class="form-control" placeholder="Localizacion">
-				   <span class="input-group-btn">
-						<button class="btn btn-primary" type="button" ng-click="buscarLocalizacion()">Buscar</button>
-				   </span>
+					<table class="table table-striped" id="table1">
+						<tr>
+							<th>Dependencia</th>
+							<th>Porcentaje</th>
+							<th>Funcionario Autorizado</th>			
+						</tr>
+						<tr ng-repeat="detalle in Detalles | filter: search | orderBy: '-id'">
+							<td>{{detalle.nombre}}</td>
+							<td>{{detalle.codigo}}</td>
+							<td>{{detalle.tipo}}</td>
+						</tr>				
+					</table>
 				</div>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-sm-12">
                 <div class="form-group">
                     <label>Observaciones</label>
                     <textarea class="form-control" ng-model="Producto.observaciones" placeholder="Observaciones" ></textarea>
@@ -98,13 +110,13 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4" ng-if="Producto.tipo_producto == '6'">
+            <div class="col-sm-4" ng-if="Producto.tipo_producto == '6'">
                 <div class="form-group">
                     <label>Numero de Proceso</label>
                     <input type="text" class="form-control" ng-model="Producto.numero_proceso" placeholder="Numero de Proceso">
                 </div>
             </div>
-            <div class="col-lg-4" ng-if="Producto.tipo_producto == '2'">
+            <div class="col-sm-4" ng-if="Producto.tipo_producto == '2'">
                 <div class="form-group">
                     <label>Nivel de Inteligencia</label>
                     <input type="text" class="form-control" ng-model="Producto.nivel_inteligencia" placeholder="Nivel de Inteligencia">
@@ -112,7 +124,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-12" ng-if="Producto.tipo_producto == '2'">
+            <div class="col-sm-12" ng-if="Producto.tipo_producto == '2'">
                 <div class="form-group" >
                     <label>Descripcion del Bien o Servicio</label>
                     <textarea class="form-control" ng-model="Producto.descripcion_bien_servicio" placeholder="Descripcion del Bien o Servicio" ></textarea>
@@ -120,20 +132,20 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4" ng-if="Producto.tipo_producto == '2'">
+            <div class="col-sm-4" ng-if="Producto.tipo_producto == '2'">
                 <div class="form-group" >
                     <label>Tipo de Ubicacion</label>
                     <select ng-model="Producto.tipo_ubicacion" class="form-control" ng-options="tipoubicacion.id as tipoubicacion.nombre for tipoubicacion in tipoubicaciones">
                     </select>
                 </div>
             </div>
-            <div class="col-lg-4" ng-if="Producto.tipo_producto == '2'">
+            <div class="col-sm-4" ng-if="Producto.tipo_producto == '2'">
                 <div class="form-group" >
                     <label>Proveedores sugeridos</label>
                     <input type="text" class="form-control" ng-model="Producto.proveedores_sugeridos" placeholder="Proveedores Sugeridos">
                 </div>
             </div>
-            <div class="col-lg-4" ng-if="Producto.tipo_producto == '13' || Producto.tipo_producto == '14'">
+            <div class="col-sm-4" ng-if="Producto.tipo_producto == '13' || Producto.tipo_producto == '14'">
                 <div class="form-group">
                     <label>Numero de Contrato</label>
                     <input type="text" class="form-control" ng-model="Producto.numero_contrato" placeholder="Numero de Contrato">
@@ -141,19 +153,19 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4" ng-if="Producto.tipo_producto == '10' || Producto.tipo_producto == '14'">
+            <div class="col-sm-4" ng-if="Producto.tipo_producto == '10' || Producto.tipo_producto == '14'">
                 <div class="form-group">
                     <label>Numero de Requerimiento</label>
                     <input type="text" class="form-control" ng-model="Producto.numero_requerimiento" placeholder="Numero de Requerimiento">
                 </div>
             </div>
-            <div class="col-lg-4" ng-if="Producto.tipo_producto == '10' || Producto.tipo_producto == '1' || Producto.tipo_producto == '7'">
+            <div class="col-sm-4" ng-if="Producto.tipo_producto == '10' || Producto.tipo_producto == '1' || Producto.tipo_producto == '7'">
                 <div class="form-group">
                     <label>Valor</label>
                     <input type="text" class="form-control" ng-model="Producto.valor" placeholder="Valor (Sin IVA)">
                 </div>
             </div>
-            <div class="col-lg-4" ng-if="Producto.tipo_producto == '10' || Producto.tipo_producto == '1' || Producto.tipo_producto == '7'">
+            <div class="col-sm-4" ng-if="Producto.tipo_producto == '10' || Producto.tipo_producto == '1' || Producto.tipo_producto == '7'">
                 <div class="form-group">
                     <label>Moneda</label>
                     <select ng-model="Producto.moneda" class="form-control" ng-options="moneda.id as moneda.nombre for moneda in monedas">
@@ -165,19 +177,19 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4" ng-if="Producto.tipo_producto == '10' || Producto.tipo_producto == '7'">
+            <div class="col-sm-4" ng-if="Producto.tipo_producto == '10' || Producto.tipo_producto == '7'">
                 <div class="form-group">
                     <label>Fecha de Inicio</label>
                     <input type="text" class="form-control" ng-model="Producto.fecha_inicio" placeholder="Fecha Inicio">
                 </div>
             </div>
-            <div class="col-lg-4" ng-if="Producto.tipo_producto == '10' || Producto.tipo_producto == '7'">
+            <div class="col-sm-4" ng-if="Producto.tipo_producto == '10' || Producto.tipo_producto == '7'">
                 <div class="form-group">
                     <label>Fecha Fin</label>
                     <input type="text" class="form-control" ng-model="Producto.fecha_terminacion" placeholder="Fecha Fin">
                 </div>
             </div>
-            <div class="col-lg-4" ng-if="Producto.tipo_producto == '10' || Producto.tipo_producto == '1' || Producto.tipo_producto == '7'">
+            <div class="col-sm-4" ng-if="Producto.tipo_producto == '10' || Producto.tipo_producto == '1' || Producto.tipo_producto == '7'">
                 <div class="form-group">
                     <label>Numero de Contrato Marco</label>
                     <input type="text" class="form-control" ng-model="Producto.numero_contrato_marco" placeholder="Numero de Contrato o Contrato Marco">
@@ -185,7 +197,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4" ng-if="Producto.tipo_producto == '14' || Producto.tipo_producto == '1'">
+            <div class="col-sm-4" ng-if="Producto.tipo_producto == '14' || Producto.tipo_producto == '1'">
                 <div class="form-group">
                     <label>Tipo de Contrato</label>
                     <select ng-model="Producto.tipo_contrato" class="form-control" ng-options="tipocontrato.id as tipocontrato.nombre for tipocontrato in tipocontratos">
@@ -193,13 +205,13 @@
 
                 </div>
             </div>
-            <div class="col-lg-4" ng-if="Producto.tipo_producto == '14' || Producto.tipo_producto == '1'">
+            <div class="col-sm-4" ng-if="Producto.tipo_producto == '14' || Producto.tipo_producto == '1'">
                 <div class="form-group">
                     <label>Cual?</label>
                     <input type="text" class="form-control" ng-model="Producto.tipo_contrato_cual" placeholder="Cual?">
                 </div>
             </div>
-            <div class="col-lg-4" ng-if="Producto.tipo_producto == '12'">
+            <div class="col-sm-4" ng-if="Producto.tipo_producto == '12'">
                 <div class="form-group">
                     <label>Numero de Pedido (OT/OD/OS)</label>
                     <input type="text" class="form-control" ng-model="Producto.numero_pedido_ot_od_os" placeholder="Numero de Pedido para OT/OD/OS">
@@ -207,7 +219,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4" ng-if="Producto.tipo_producto == '11'">
+            <div class="col-sm-4" ng-if="Producto.tipo_producto == '11'">
                 <div class="form-group">
                     <label>Numero de Orden de Compra</label>
                     <input type="text" class="form-control" ng-model="Producto.numero_orden_compra" placeholder="Numero Orden de Compra">
@@ -215,13 +227,13 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4" ng-if="Producto.tipo_producto == '4'">
+            <div class="col-sm-4" ng-if="Producto.tipo_producto == '4'">
                 <div class="form-group">
                     <label>NIT</label>
                     <input type="text" class="form-control" ng-model="Producto.nit" placeholder="NIT">
                 </div>
             </div>
-            <div class="col-lg-8" ng-if="Producto.tipo_producto == '4'">
+            <div class="col-sm-8" ng-if="Producto.tipo_producto == '4'">
                 <div class="form-group">
                     <label>Razon Social</label>
                     <input type="text" class="form-control" ng-model="Producto.razon_social" placeholder="Razon Social">
@@ -233,7 +245,7 @@
 
 	<div class="panel panel-footer">
 	<div class="row">
-		<div class="col-lg-12">
+		<div class="col-sm-12">
 			<input type="button" class="btn btn-primary" value="Asignar" ng-click="asignarResponsable()" admin_action="Si"  />
 			<input type="button" class="btn btn-primary" value="Cambiar Estado" ng-click="cambiarEstado()"  admin_action="Si" />
 			<input type="button" class="btn btn-primary" value="Historia" ng-click="ver_historia()" />			
@@ -283,7 +295,7 @@
 	  
 	<div class="panel panel-footer">
       <div class="row">
-		<div class="col-lg-12">
+		<div class="col-sm-12">
 			<input type="button" ng-click="guardarAsignacion()" class="btn btn-danger" value="Guardar"/>
 			<input type="button" class="btn btn-primary" value="Cerrar" data-dismiss="modal" aria-hidden="true"/>
 		</div>
@@ -327,7 +339,7 @@
       </div>
 <div class="panel panel-footer">
       <div class="row">
-		<div class="col-lg-12">
+		<div class="col-sm-12">
 			<input type="button" ng-click="guardarEstado()" class="btn btn-danger" value="Guardar"/>
 			<input type="button" class="btn btn-primary" value="Cerrar" data-dismiss="modal" aria-hidden="true"/>
 		</div>
@@ -349,9 +361,9 @@
               <hr />
       <div class="form-group" >
         <label for="Anexo_Producto.anexo">Archivo (PDF, DOCX, PPTX, XLSX, ZIP):</label>
-        <input type="file" class="form-control" id="Anexo_Producto.anexo" ng-model="Anexo_Producto.anexo" accept=".pdf,.doc,.docx, .ppt, .pptx, .xls, .xlsx, .zip" />
+        <input type="file" class="form-control" ng-model="Anexo_Producto.anexo" accept=".pdf,.doc,.docx, .ppt, .pptx, .xls, .xlsx, .zip" />
       </div>
-      <div class="form-group" >
+      <div class="form-group">
         <label for="Anexo_Producto.fecha">Fecha</label>
         <input type="text" class="form-control" id="Anexo_Producto.fecha" ng-model="Anexo_Producto.fecha" placeholder="Fecha" />
       </div>
@@ -361,7 +373,7 @@
       </div>
 <div class="panel panel-footer">
       <div class="row">
-		<div class="col-lg-12">
+		<div class="col-sm-12">
 			<input type="button" ng-click="guardarAnexo()" class="btn btn-danger" value="Guardar"/>
 			<input type="button" class="btn btn-primary" value="Cerrar" data-dismiss="modal" aria-hidden="true"/>
 		</div>
@@ -370,7 +382,7 @@
     </form>	
   </modal>
 
-   <modal title="Buscar localizaciones" visible="showModalLocalizacion">
+   <modal title="Buscar Dependencias" visible="showModalDependencia">
     <form role="form">
 <div class="form-group" >
         <label >Consecutivo</label>
@@ -383,27 +395,12 @@
               <hr />
       
       <div class="form-group" >
-        <label for="Localizacion.codigo">Localizacion</label>
-        <!-- /filtros/localizaciones/ -->
-		<table class="table table-striped" id="table1">
-			<tr>
-				<th>Localizacion</th>
-				<th>Cliente</th>
-				<th>Usuario</th>			
-				<th>Vigencia desde</th>
-				<th>Vigencia hasta</th>
-			</tr>
-			<tr ng-repeat="localizacion in localizaciones | filter: search | orderBy: '-id'">
-				<td>{{localizacion.localizacion}}</td>
-				<td>{{localizacion.cliente}}</td>
-				<td>{{localizacion.usuario}}</td>
-				<td>{{localizacion.vigencia_fecha_desde | date }}</td>
-				<td>{{localizacion.vigencia_fecha_hasta | date }}</td>
-			</tr>				
-		</table>
+        <label for="Dependencia.codigo">Dependencias</label>
+        <!-- /filtros/Dependencias/ -->
+
 <div class="panel panel-footer">
       <div class="row">
-		<div class="col-lg-12">
+		<div class="col-sm-12">
 			<input type="button" ng-click="guardarAnexo()" class="btn btn-danger" value="Guardar"/>
 			<input type="button" class="btn btn-primary" value="Cerrar" data-dismiss="modal" aria-hidden="true"/>
 		</div>
@@ -424,13 +421,20 @@
 	var current_user_id = {{request.user.id}};
 	var current_user_name = "{{request.user}}";
 
+    var g0 = '{{ user.groups.all.0}}';
+    var g1 = '{{ user.groups.all.1}}';
+    var g2 = '{{ user.groups.all.2}}';
+    var g3 = '{{ user.groups.all.3}}';
+    var g4 = '{{ user.groups.all.4}}';
+    var g5 = '{{ user.groups.all.5}}';
+
 	function setTitlesPops()
 	{
 		$("div[pot-data^='tipo_actividad']").html("<h4>" + $("#cmb_tipo_producto option:selected").text() + "</h4>");
 		
 	}
 	
-	app.controller('editController',function($scope, $http, $window, ProductoService, UserService, TipoContratoService, TipoUbicacionService, TipoObjetoService, TipoProductoService, MonedaService, PaisService, DepartamentoService, CiudadService, ClienteService, LocalizacionService, AccionesEstadoService, AnexoProductoService, EstadoProductoService, UsuarioLocalizacionService, AccionesSourcingService) {
+	app.controller('editController',function($scope, $http, $window, ProductoService, UserService, TipoContratoService, TipoUbicacionService, TipoObjetoService, TipoProductoService, MonedaService, PaisService, DepartamentoService, CiudadService, ClienteService, DependenciaService, AccionesEstadoService, AnexoProductoService, EstadoProductoService, UsuarioDependenciaService, AccionesSourcingService, multipartForm) {
 		
         var q_01 = UserService.query();
 		var q_02 = TipoContratoService.query();
@@ -442,9 +446,10 @@
 		var q_08 = DepartamentoService.query();
 		var q_09 = CiudadService.query();
 		var q_10 = ClienteService.query();
-		var q_11 = LocalizacionService.query();
+		var q_11 = DependenciaService.query();
 
 		var q_12 = AccionesEstadoService.query();
+		//var q_13 = DetalleServicioService.query();
 		
 		q_01.$promise.then(function(data){
 			$scope.users = data.results;
@@ -487,7 +492,7 @@
 		});	
 	
 		q_11.$promise.then(function(data){
-			$scope.localizaciones = data.results;
+			$scope.Dependencias = data.results;
 		});	
 	*/
 		q_12.$promise.then(function(data){
@@ -495,10 +500,10 @@
 		});	
 		
 		
-	    $http.get("/filtros/localizaciones/?username=" + current_user_id)
+	    $http.get("/filtros/dependencias/?username=" + current_user_id)
 		.then(function(response) {
 			console.log(response.data);
-			$scope.localizaciones = response.data.results;
+			$scope.Detalles = response.data.results;
 		});
 		
 		//$scope.acciones_asignacion = {"Asignar":'Asignar',"Devolver":'Devolver',"Cerrar":'Cerrar',"Cancelar":'Cancelar'};
@@ -540,9 +545,9 @@
 			setTitlesPops();
         };
 
-		$scope.showModalLocalizacion = false;
-        $scope.buscarLocalizacion = function(){
-            $scope.showModalLocalizacion = !$scope.showModalLocalizacion;
+		$scope.showModalDependencia = false;
+        $scope.buscarDependencia = function(){
+            $scope.showModalDependencia = !$scope.showModalDependencia;
 			setTitlesPops();
         };
 		
@@ -630,7 +635,8 @@
 			//$scope.errors = {};
 			$scope.Anexo_Producto.producto = idx;
 			$scope.Anexo_Producto.usuario = current_user_id;
-			
+			//$scope.uploader = new FileUploader();
+
 			console.log($scope.Anexo_Producto);
 			
 			$http({
@@ -638,51 +644,15 @@
 				  url: '/api/anexoproducto/',
 				  data : $scope.Anexo_Producto,
 				}).then(function successCallback(response) {
-					//alert("Correct");
-					//asignarResponsable();
+
 				  }, function errorCallback(response) {
 					//alert(response.data);
-					console.log(response.data);
+					console.log(response);
 					//$("#errAsigna").html = response.data;
 			});
 		};
 	});
 
-</script>
-
-<script>
-	
-	function AddMasks(){
-		$("input[placeholder^='Fecha']").datepicker();
-		$("input[placeholder^='Valor']").spinner({
-			  step: 0.01,
-			  numberFormat: "n"
-		});
-	}
-	
-	$( document ).ready(function() {
-		//console.log($("input")); //.attr("ng-model", "producto.fecha_*"));
-		$("#cmb_tipo_producto").change(function () {
-			AddMasks();
-		});
-		
-		AddMasks();
-		
-		// Ocultar los botones que no aplican
-		if (idx == 0)
-		{
-			$("input[admin_action^='Si']").hide();
-			//$("#cmb_usuario").val(current_user_id);
-			//$("input[pot-data^='tipo_actividad']").html($("#cmb_tipo_producto").text());
-		}
-		else
-		{
-			$("#cmb_tipo_producto").prop('disabled', 'disabled');
-			$("#cmb_usuario").prop('disabled', 'disabled');
-			$("input[admin_action^='Si']").show();			
-			$("div[pot-data^='tipo_actividad']").html("<h3>" + $("#cmb_tipo_producto option:selected").text() + "</h3>");
-		}
-	});		
 </script>
 	
 {% endblock js %}

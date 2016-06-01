@@ -19,7 +19,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
+#
 SECRET_KEY = '$b3z-h73j8=hs%0fc!&3gie0k9tlf=o@0c%16scq0l$@agj69!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -61,6 +61,11 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_FILTER_BACKENDS': (
         'rest_framework.filters.DjangoFilterBackend',
+    ),
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser',
     ),
     'PAGE_SIZE': 1000
 }
@@ -111,7 +116,7 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
-LANGUAGE_CODE = 'es-mx'
+#LANGUAGE_CODE = 'es-mx'
 
 TIME_ZONE = 'UTC'
 
@@ -132,18 +137,21 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static_in_pro"),
     #'/var/www/static/',
 ]
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'oralvarez@gmail.com'
-EMAIL_HOST_PASSWORD = '##$F3l1p301$2016#'
-EMAIL_PORT = 587
-DEFAULT_FROM_EMAIL = 'oralvarez@gmail.com'
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+#EMAIL_USE_TLS = True
+#EMAIL_HOST = 'smtp.gmail.com'
+#EMAIL_HOST_USER = 'oralvarez@gmail.com'
+#EMAIL_HOST_PASSWORD = '##$F3l1p301$2016#'
+#EMAIL_PORT = 587
+#DEFAULT_FROM_EMAIL = 'oralvarez@gmail.com'
 
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_USE_TLS = True
-# EMAIL_HOST = 'smtpout.secureserver.net'
-# EMAIL_HOST_USER = 'no.reply@eamcys.com'
-# EMAIL_HOST_PASSWORD = 'No123'
-# EMAIL_PORT = 587
-# DEFAULT_FROM_EMAIL = 'no.reply@eamcys.com'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_SSL = True
+EMAIL_HOST = 'smtpout.secureserver.net'
+EMAIL_HOST_USER = 'no-reply@eamcys.com'
+EMAIL_HOST_PASSWORD = 'No123'
+EMAIL_PORT = 465
+DEFAULT_FROM_EMAIL = 'no-reply@eamcys.com'
+
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
+MEDIA_URL = '/media/'
