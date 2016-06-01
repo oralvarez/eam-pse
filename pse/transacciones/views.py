@@ -18,6 +18,7 @@ from rest_framework import filters
 from rest_framework import generics
 from rest_framework.parsers import FormParser, MultiPartParser
 from django.db.models import Count
+from django.contrib.auth.decorators import login_required
 
 from django.db.models import F, Q
 
@@ -391,6 +392,7 @@ class Acciones_SourcingViewSet(viewsets.ModelViewSet):
 #########################
 
 #@api_view(['GET'])
+@login_required(login_url="/")
 def index(request):
     template = loader.get_template('tema3/index_interno.html')
     grupos = request.user.groups.values_list('name', flat=True)
@@ -406,6 +408,7 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 #@api_view(['GET'])
+@login_required(login_url="/")
 def reportes_basicos(request):
     template = loader.get_template('tema3/reportes_basicos.html')
 
@@ -415,6 +418,7 @@ def reportes_basicos(request):
     }
     return HttpResponse(template.render(context, request))
 
+@login_required(login_url="/")
 def lista_productos_abastecimiento(request, tipo):
     tp = TipoProducto.objects.get(pk=tipo)
     template = loader.get_template('tema3/lista_productos_abastecimiento.html')
@@ -424,6 +428,7 @@ def lista_productos_abastecimiento(request, tipo):
     }
     return HttpResponse(template.render(context, request))
 
+@login_required(login_url="/")
 def detalle_producto_abastecimiento(request, id):
     #uc = Usuario_Cliente.objects.filter(usuario=request.user).values('cliente_id')
     #cl = Cliente.objects.filter(id__in=uc)
@@ -438,6 +443,7 @@ def detalle_producto_abastecimiento(request, id):
     }
     return HttpResponse(template.render(context, request))
 
+@login_required(login_url="/")
 def agregar_producto_abastecimiento(request):
     #for user in User.objects.filter(groups__name='Asignador'):
     #    recipients.append(user.email)
@@ -486,3 +492,4 @@ def logout(request):
 #         if username is not None:
 #             queryset = queryset.filter(usuario=username)
 #         return queryset
+

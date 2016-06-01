@@ -43,7 +43,7 @@
 </head>
 
 <body ng-app="myApp">
-
+	
     <div id="wrapper">
 
         <!-- Navigation -->
@@ -202,7 +202,192 @@
             <!-- /.row -->
         </div>
         <!-- /#page-wrapper -->
+		<!-- Modal Chart Settings -->	
+            <div class="modal fade" id="chartSettings" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">Configuracion de Grafica</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="tab-container tile">
+                                <ul class="nav nav-pills">
+                                    <li class="active"><a href="#conf-general" data-toggle="tab">Configuración General</a></li>
+                                    <li><a href="#addAxis" data-toggle="tab">Agregar Eje Vertical</a></li>
+                                    <li><a href="#setAxis" data-toggle="tab">Configurar Ejes</a></li>
+                                    <li><a href="#setAxisObj" data-toggle="tab">Configurar Series</a></li>
+                                </ul>
+                          
+                                <div class="tab-content">
+                                    <div class="tab-pane fade in active" id="conf-general">
+                                        <div class="row form-columned" role="form">
+                                            <div class="col-md-2">
+                                                Tipo de grafico:
+                                            </div>   
+                                            <div class="col-md-10">
+                                                <select class="form-control input-sm m-b-10" id="selChartType">
+                                                    <option value="area">Area</option>
+                                                    <option value="column">Columnas</option>
+                                                    <option value="bar">Barras</option>
+                                                    <option value="line">Lineas</option>
+                                                    <option value="spline">Lineas Curveadas</option>
+                                                    <option value="pie">Pastel</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                Titulo Principal Grafico:
+                                            </div>
+                                            <div class="col-md-10">
+                                                <input type="text" id="tituloGrafica" class="form-control m-b-10" placeholder="Ingrese el Titulo" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                SubTitulo del Grafico:
+                                            </div>
+                                            <div class="col-md-10">
+                                                <input type="text" id="subtituloGrafica" class="form-control m-b-10" placeholder="Ingrese el SubTitulo" />
+                                            </div>
+                                            </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="addAxis">
+                                        <div class="row form-columned" role="form">
+                                            <div class="col-md-2">
+                                                ID Eje:
+                                            </div>                                                        
+                                            <div class="col-md-10">
+                                                <input type="text" id="id_eje" class="form-control m-b-10 validate[required]" placeholder="Ingrese el ID del Eje (Ej: ID_AXIS_BSW)" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                Titulo:
+                                            </div>                                                        
+                                            <div class="col-md-10">
+                                                <input type="text" id="titulo_eje" class="form-control m-b-10 validate[required]" placeholder="Ingrese el titulo del Eje" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                Minimo:
+                                            </div>                                                        
+                                            <div class="col-md-4">
+                                                <input type="text" id="min_eje" class="form-control m-b-10 validate[custom[integer]]" placeholder="Ingrese el Valor Minimo del Eje" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                Maximo:
+                                            </div>                                                        
+                                            <div class="col-md-4">
+                                                <input type="text" id="max_eje" class="form-control m-b-10 validate[custom[integer]]" placeholder="Ingrese el Valor Maximo del Eje" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                Color: 
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input id="colorEje" class="color form-control m-b-10" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                Opuesto:
+                                            </div>
+                                            <div class="col-md-4">
+                                                <select class="form-control input-sm m-b-10" id="selOpuAxis"><option value="true">Si</option><option value="false">No</option></select>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <input type="button" class="btn btn-sm" value="Agregar Eje" id="addAxisBtn"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="setAxis">
+                                        <div class="row form-columned" role="form">
+                                            <div class="col-md-2">
+                                                ID Eje:
+                                            </div>
+                                            <div class="col-md-10">                                                        
+                                                <select class="form-control input-sm m-b-10" id="selIdAxis"></select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                Titulo:
+                                            </div>                                                        
+                                            <div class="col-md-10">
+                                                <input type="text" id="ed_titulo_eje" class="form-control m-b-10 validate[required]" placeholder="Ingrese el titulo del Eje" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                Minimo:
+                                            </div>                                                        
+                                            <div class="col-md-4">
+                                                <input type="text" id="ed_min_eje" class="form-control m-b-10 validate[custom[integer]]" placeholder="Ingrese el Valor Minimo del Eje" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                Maximo:
+                                            </div>                                                        
+                                            <div class="col-md-4">
+                                                <input type="text" id="ed_max_eje" class="form-control m-b-10 validate[custom[integer]]" placeholder="Ingrese el Valor Maximo del Eje" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                Color: 
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input id="ed_colorEje" class="color form-control m-b-10" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                Opuesto:
+                                            </div>
+                                            <div class="col-md-4">
+                                                <select class="form-control input-sm m-b-10" id="ed_selOpuAxis"><option value="true">Si</option><option value="false">No</option></select>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <input type="button" class="btn btn-sm" value="Actualizar Eje" id="updAxisBtn"/>
+                                            </div>  
+                                    </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="setAxisObj">
+                                        <div class="row form-columned" role="form">
+                                            <div class="col-md-2">
+                                                ID serie:
+                                            </div>
+                                            <div class="col-md-10">                                                        
+                                                <select class="form-control input-sm m-b-10" id="objSerie"></select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                Color:
+                                            </div>
+                                            <div class="col-md-10">
+                                                <input id="ed_colorSerie" class="color form-control m-b-10" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                Tipo:
+                                            </div>
+                                            <div class="col-md-10">
+                                                <select class="form-control input-sm m-b-4" id="ed_tipoSerie">
+                                                    <option value="area">Area</option>
+                                                    <option value="column">Columnas</option>
+                                                    <option value="bar">Barras</option>
+                                                    <option value="line">Lineas</option>
+                                                    <option value="spline">Lineas Curveadas</option>
+                                                    <option value="pie">Pastel</option>
+                                                </select>
+                                            </div>
+                                        <div class="col-md-2">
+                                            Eje:
+                                        </div>
+                                        <div class="col-md-10">
+                                            <select class="form-control input-sm m-b-4" id="ed_ejeSerie"></select>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <input type="button" class="btn btn-sm" value="Actualizar Serie" id="ed_actualizarSerieBtn"/>
+                                            <input type="hidden" id="ed_hid_chart" />
+                                            <input type="hidden" id="ed_hid_serie" />
+                                        </div>  
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <input type="hidden" id="hid_chart_gen" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
+		
+		<!--- Probando -->
     </div>
     <!-- /#wrapper -->
 
@@ -246,6 +431,20 @@
     <script src="/static/tema3/js/controllers.js"></script>
     <script src="/static/tema3/js/utils.js"></script>
     <!-- Otros scripts -->
+    <script src="/static/tema3/js/HoldOn.min.js" type="text/javascript"></script>
+
+    <!-- JS Color -->
+    <script src="/static/tema3/js/jscolor/jscolor.js" type="text/javascript"></script>
+
+    <!-- Otros -->
+    <script src="/static/tema3/js/jquery.confirm.min.js" type="text/javascript"></script>
+
+    <script src="/static/tema3/js/jquery.dynatable.js"></script>
+    <script src="/static/tema3/js/jspdf.min.js"></script>
+    <script src="/static/tema3/js/jscolor/jscolor.js"></script>
+    <script src="/static/tema3/js/datatables/jquery.dynatable.js"></script>
+	
+    <script src="/static/tema3/js/pse.ui.js"></script>
     <script>
 
 	function AddMasks(){
@@ -258,6 +457,8 @@
 
 	$( document ).ready(function() {
 		//console.log($("input")); //.attr("ng-model", "producto.fecha_*"));
+		testHoldon('sk-cube-grid');     
+		
 		$("#cmb_tipo_producto").change(function () {
 			AddMasks();
 		});
