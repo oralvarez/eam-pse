@@ -401,7 +401,17 @@ def index(request):
 
     context = {
         'late': 1,
-        'user' : request.user,
+        'user': request.user,
+    }
+    return HttpResponse(template.render(context, request))
+
+#@api_view(['GET'])
+def reportes_basicos(request):
+    template = loader.get_template('tema3/reportes_basicos.html')
+
+    context = {
+        'late': 1,
+        'user': request.user,
     }
     return HttpResponse(template.render(context, request))
 

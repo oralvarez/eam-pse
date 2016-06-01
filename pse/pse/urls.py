@@ -53,6 +53,7 @@ urlpatterns = [
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
     url(r'^dashboard/$', index, name="index"),
+    url(r'^reportes/$', reportes_basicos, name="reportes_basicos"),
     url(r'^logout/$', logout, name="logout"),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', login, name="login"),
@@ -63,6 +64,7 @@ urlpatterns = [
     url(r'^filtros/dependencias/$', DependenciasDetalleServicioList.as_view()),
     url(r'^filtros/productos/$', ProductoListView.as_view()),
     url(r'^filtros/consultas/$', ProductoConsultaListView.as_view()),
+
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
