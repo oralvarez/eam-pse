@@ -159,10 +159,9 @@ class Usuario_ClienteList(generics.ListAPIView):
 
         return queryset
 
-
 class ProductoListView(generics.ListAPIView):
     """
-    Vista para busquedas generales de Productos (Servicios),
+    Vista para reportes de Productos (Servicios),
     filtrando por parametros.
     """
     serializer_class = ProductoSerializer
@@ -173,6 +172,7 @@ class ProductoListView(generics.ListAPIView):
         Optionally restricts the returned purchases to a given user,
         by filtering against a `username` query parameter in the URL.
         """
+        tipo_consulta = self.request.query_params.get('tipo_consulta', None)
         tipo_producto = self.request.query_params.get('tipo_producto', None)
         consecutivo = self.request.query_params.get('consecutivo', None)
         estado = self.request.query_params.get('estado', None)
@@ -188,43 +188,76 @@ class ProductoListView(generics.ListAPIView):
         queryset = self.get_queryset()
 
         if tipo_producto is not None:
-            queryset = queryset.filter(tipo_producto=tipo_producto)
-
-        if usuario is not None:
-            queryset = queryset.filter(usuario=usuario)
+            if len(tipo_producto) <> 0:
+                queryset = queryset.filter(tipo_producto=tipo_producto)
 
         if consecutivo is not None:
-            queryset = queryset.filter(consecutivo=consecutivo)
+            if len(consecutivo) <> 0:
+                queryset = queryset.filter(consecutivo=consecutivo)
 
         if estado is not None:
-            queryset = queryset.filter(estado=estado)
+            if len(estado) <> 0:
+                queryset = queryset.filter(estado=estado)
 
         if es_secreto is not None:
-            queryset = queryset.filter(es_secreto=es_secreto)
+            if len(es_secreto) <> 0:
+                queryset = queryset.filter(es_secreto=es_secreto)
 
         if dependencia is not None:
-            queryset = queryset.filter(id__in=Dependencia.objects.filter(id=dependencia).values('id'))
+            if len(dependencia) <> 0:
+                queryset = queryset.filter(id__in=Dependencia.objects.filter(id=dependencia).values('id'))
 
         if nit is not None:
-            queryset = queryset.filter(id__in=Dependencia.objects.filter(cliente_id__in=Cliente.objects.filter(nit=nit).values('id')).values('id'))
+            if len(nit) <> 0:
+                queryset = queryset.filter(id__in=Dependencia.objects.filter(cliente_id__in=Cliente.objects.filter(nit=nit).values('id')).values('id'))
+
+        if usuario is not None:
+            if len(usuario) != 0:
+                u = User.objects.get(username=usuario)
+                queryset = queryset.filter(usuario=u.id)
 
         if asignador is not None:
-            queryset = queryset.filter(asignador=asignador)
+            if len(asignador) != 0:
+                u = User.objects.get(username=asignador)
+                queryset = queryset.filter(asignador=u.id)
 
         if gestor_asignado is not None:
-            queryset = queryset.filter(gestor_asignado=gestor_asignado)
+            if len(gestor_asignado) != 0:
+                u = User.objects.get(username=gestor_asignado)
+                queryset = queryset.filter(gestor_asignado=u.id)
 
-        grupos = request.user.groups.values_list('name', flat=True)
+        if fecha_registro_desde is not None and fecha_registro_hasta is not None:
+            if len(fecha_registro_desde) != 0 and len(fecha_registro_hasta) != 0:
+                queryset = queryset.filter(fecha_registro__range=[fecha_registro_desde, fecha_registro_hasta])
 
-        for g in grupos:
-            if g == "Clientes":
-                queryset = queryset.filter(usuario=request.user)
-                break
-            if g == "Asignadores":
-                queryset = queryset.filter(asignador=request.user)
-                break
+        if tipo_consulta == "1":
+            queryset = queryset.values('tipo_producto__nombre').annotate(conteo=Count('tipo_producto'))
 
-        serializer = ProductoSerializer(queryset, many=True)
+        if tipo_consulta == "2":
+            #queryset = queryset.select_related('usuario')
+            queryset = queryset.values('usuario__username').annotate(conteo=Count('usuario'))
+
+        if tipo_consulta == "3":
+            queryset = queryset.values('estado').annotate(conteo=Count('estado'))
+
+        if tipo_consulta == "4":
+            queryset = queryset.values('es_secreto').annotate(conteo=Count('es_secreto'))
+
+        if tipo_consulta == "5":
+            queryset = queryset.values('asignador__username').annotate(conteo=Count('asignador'))
+
+        if tipo_consulta == "6":
+            queryset = queryset.values('gestor_asignado__username').annotate(conteo=Count('gestor_asignado'))
+
+        if tipo_consulta == "7":
+            queryset = queryset.values('nit').annotate(conteo=Count('nit'))
+
+        if tipo_consulta == "8":
+            queryset = queryset.values('fecha_registro').annotate(conteo=Count('fecha_registro'))
+
+        queryset = queryset.order_by('-id')
+
+        serializer = ProductoListSerializer(queryset, many=True)
         return Response(serializer.data)
 
 
@@ -257,37 +290,54 @@ class ProductoConsultaListView(generics.ListAPIView):
         queryset = self.get_queryset()
 
         if tipo_producto is not None:
-            queryset = queryset.filter(tipo_producto=tipo_producto)
-
-        if usuario is not None:
-            queryset = queryset.filter(usuario=usuario)
+            if len(tipo_producto) <> 0:
+                queryset = queryset.filter(tipo_producto=tipo_producto)
 
         if consecutivo is not None:
-            queryset = queryset.filter(consecutivo=consecutivo)
+            if len(consecutivo) <> 0:
+                queryset = queryset.filter(consecutivo=consecutivo)
 
         if estado is not None:
-            queryset = queryset.filter(estado=estado)
+            if len(estado) <> 0:
+                queryset = queryset.filter(estado=estado)
 
         if es_secreto is not None:
-            queryset = queryset.filter(es_secreto=es_secreto)
+            if len(es_secreto) <> 0:
+                queryset = queryset.filter(es_secreto=es_secreto)
 
         if dependencia is not None:
-            queryset = queryset.filter(id__in=Dependencia.objects.filter(id=dependencia).values('id'))
+            if len(dependencia) <> 0:
+                queryset = queryset.filter(id__in=Dependencia.objects.filter(id=dependencia).values('id'))
 
         if nit is not None:
-            queryset = queryset.filter(id__in=Dependencia.objects.filter(cliente_id__in=Cliente.objects.filter(nit=nit).values('id')).values('id'))
+            if len(nit) <> 0:
+                queryset = queryset.filter(id__in=Dependencia.objects.filter(cliente_id__in=Cliente.objects.filter(nit=nit).values('id')).values('id'))
+
+        if usuario is not None:
+            if len(usuario) != 0:
+                u = User.objects.get(username=usuario)
+                queryset = queryset.filter(usuario=u.id)
 
         if asignador is not None:
-            queryset = queryset.filter(asignador=asignador)
+            if len(asignador) != 0:
+                u = User.objects.get(username=asignador)
+                queryset = queryset.filter(asignador=u.id)
 
         if gestor_asignado is not None:
-            queryset = queryset.filter(gestor_asignado=gestor_asignado)
+            if len(gestor_asignado) != 0:
+                u = User.objects.get(username=gestor_asignado)
+                queryset = queryset.filter(gestor_asignado=u.id)
+
+        if fecha_registro_desde is not None and fecha_registro_hasta is not None:
+            if len(fecha_registro_desde) != 0 and len(fecha_registro_hasta) != 0:
+                queryset = queryset.filter(fecha_registro__range=[fecha_registro_desde, fecha_registro_hasta])
 
         if tipo_consulta == "1":
-            queryset = queryset.values('tipo_producto').annotate(conteo=Count('tipo_producto'))
+            queryset = queryset.values('tipo_producto__nombre').annotate(conteo=Count('tipo_producto'))
 
         if tipo_consulta == "2":
-            queryset = queryset.values('usuario').annotate(conteo=Count('usuario'))
+            #queryset = queryset.select_related('usuario')
+            queryset = queryset.values('usuario__username').annotate(conteo=Count('usuario'))
 
         if tipo_consulta == "3":
             queryset = queryset.values('estado').annotate(conteo=Count('estado'))
@@ -296,16 +346,15 @@ class ProductoConsultaListView(generics.ListAPIView):
             queryset = queryset.values('es_secreto').annotate(conteo=Count('es_secreto'))
 
         if tipo_consulta == "5":
-            queryset = queryset.values('asignador').annotate(conteo=Count('asignador'))
+            queryset = queryset.values('asignador__username').annotate(conteo=Count('asignador'))
 
         if tipo_consulta == "6":
-            queryset = queryset.values('gestor_asignado').annotate(conteo=Count('gestor_asignado'))
+            queryset = queryset.values('gestor_asignado__username').annotate(conteo=Count('gestor_asignado'))
 
         if tipo_consulta == "7":
             queryset = queryset.values('nit').annotate(conteo=Count('nit'))
 
         if tipo_consulta == "8":
-            from datetime import datetime
             queryset = queryset.values('fecha_registro').annotate(conteo=Count('fecha_registro'))
 
         serializer = ProductoListSerializer(queryset, many=True)

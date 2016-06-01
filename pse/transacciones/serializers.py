@@ -92,16 +92,19 @@ class Detalle_ServicioSerializer(serializers.ModelSerializer):
 
 class ProductoListSerializer(serializers.Serializer):
     #item = serializers.CharField()
+    id = serializers.IntegerField(required=False)
+    consecutivo = serializers.CharField(required=False)
     tipo_producto = serializers.CharField(required=False)
+    tipo_producto__nombre = serializers.CharField(required=False)
     estado = serializers.CharField(required=False)
-    usuario = serializers.CharField(required=False)
+    usuario__username = serializers.CharField(required=False)
     es_secreto = serializers.CharField(required=False)
-    asignador = serializers.CharField(required=False)
-    gestor_asignado = serializers.CharField(required=False)
+    asignador__username = serializers.CharField(required=False)
+    gestor_asignado__username = serializers.CharField(required=False)
     nit = serializers.CharField(required=False)
-    fecha_registro = serializers.DateTimeField(required=False)
-    conteo = serializers.IntegerField()
-
+    fecha_registro = serializers.DateField(required=False)
+    observaciones = serializers.CharField(required=False)
+    conteo = serializers.IntegerField(required=False)
 
 class ProductoSerializer(serializers.ModelSerializer):
 

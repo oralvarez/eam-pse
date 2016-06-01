@@ -44,6 +44,19 @@ app.directive('modal', function () {
     };
   });
 
+app.directive( 'elemReady', function( $parse ) {
+   return {
+       restrict: 'A',
+       link: function( $scope, elem, attrs ) {    
+          elem.ready(function(){
+            $scope.$apply(function(){
+                var func = $parse(attrs.elemReady);
+                func($scope);
+            })
+          })
+       }
+    }
+})
 
 app.directive('fileModel', ['$parse', function($parse){
 	return {
@@ -72,3 +85,17 @@ app.service('multipartForm', ['$http', function($http){
 		});
 	}
 }]);
+
+app.directive('autoComplete', function($timeout) {
+    return function(scope, iElement, iAttrs) {
+            iElement.autocomplete({
+                source: scope[iAttrs.uiItems],
+                select: function() {
+                    $timeout(function() {
+                      iElement.trigger('input');
+                    }, 0);
+                }
+            })
+    }
+});
+

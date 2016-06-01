@@ -98,19 +98,19 @@
 												<a href="#">Planeación <span class="fa arrow"></span></a>
 												<ul class="nav nav-fourth-level">
 													<li>
-														<a href="/nav/abastecimiento/productos/1">Requerimientos de Bienes o Servicios</a>
+														<a href="/nav/abastecimiento/servicios/?tipo=11">Requerimientos de Bienes o Servicios</a>
 													</li>
 													<li>
-														<a href="/nav/abastecimiento/productos/2">Inteligencia de Mercado</a>
+														<a href="/nav/abastecimiento/servicios/?tipo=12">Inteligencia de Mercado</a>
 													</li>
 													<li>
-														<a href="/nav/abastecimiento/productos/3">Proveedores</a>
+														<a href="/nav/abastecimiento/servicios/?tipo=13">Proveedores</a>
 													</li>
 													<li>
-														<a href="/nav/abastecimiento/productos/4">Diseño de Estrategia de Mercado</a>
+														<a href="/nav/abastecimiento/servicios/?tipo=14">Diseño de Estrategia de Mercado</a>
 													</li>
 													<li>
-														<a href="/nav/abastecimiento/productos/5">Sourcing</a>
+														<a href="/nav/abastecimiento/servicios/?tipo=15">Sourcing</a>
 													</li>
 												
 												</ul>
@@ -120,13 +120,13 @@
 												<a href="#">Ejecución <span class="fa arrow"></span></a>
 												<ul class="nav nav-fourth-level">
 													<li>
-														<a href="/nav/abastecimiento/productos/6">Evaluación</a>
+														<a href="/nav/abastecimiento/servicios/?tipo=16">Evaluación</a>
 													</li>
 													<li>
-														<a href="/nav/abastecimiento/productos/7">Subasta</a>
+														<a href="/nav/abastecimiento/servicios/?tipo=17">Subasta</a>
 													</li>
 													<li>
-														<a href="/nav/abastecimiento/productos/8">Venta de Excedentes</a>
+														<a href="/nav/abastecimiento/servicios/?tipo=18">Venta de Excedentes</a>
 													</li>
 												</ul>
 												<!-- /.nav-third-level -->
@@ -135,19 +135,19 @@
 												<a href="#">Contratación <span class="fa arrow"></span></a>
 												<ul class="nav nav-fourth-level">
 													<li>
-														<a href="/nav/abastecimiento/productos/9">OT/OD/OS</a>
+														<a href="/nav/abastecimiento/servicios/?tipo=19">OT/OD/OS</a>
 													</li>
 													<li>
-														<a href="/nav/abastecimiento/productos/10">Seguimiento</a>
+														<a href="/nav/abastecimiento/servicios/?tipo=110">Seguimiento</a>
 													</li>
 													<li>
-														<a href="/nav/abastecimiento/productos/11">Recibo de Mercancias</a>
+														<a href="/nav/abastecimiento/servicios/?tipo=111">Recibo de Mercancias</a>
 													</li>
 													<li>
-														<a href="/nav/abastecimiento/productos/12">Liquidación</a>
+														<a href="/nav/abastecimiento/servicios/?tipo=112">Liquidación</a>
 													</li>
 													<li>
-														<a href="/nav/abastecimiento/productos/13">Otro Si</a>
+														<a href="/nav/abastecimiento/servicios/?tipo=113">Otro Si</a>
 													</li>
 												
 												</ul>
@@ -249,7 +249,7 @@
     <script>
 
 	function AddMasks(){
-		$("input[placeholder^='Fecha']").datepicker();
+		$("input[placeholder^='Fecha']").datepicker({ dateFormat: 'yy-mm-dd' });
 		$("input[placeholder^='Valor']").spinner({
 			  step: 0.01,
 			  numberFormat: "n"

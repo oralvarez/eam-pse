@@ -70,7 +70,7 @@ class TipoProducto(models.Model):
     descripcion = models.TextField()
 
     def __unicode__(self):
-        return '%s - %s' % (self.id, self.nombre)
+        return '%s' % (self.nombre)
 
 
 def content_file_name(instance, filename):
@@ -112,7 +112,7 @@ class Dependencia(models.Model):
 class Producto(models.Model):
     consecutivo = models.CharField(max_length=30, blank=True, null=True)
     numero_consecutivo = models.DecimalField(max_digits=30, decimal_places=0, blank=True, null=True)
-    fecha_registro = models.DateTimeField(auto_now_add=True, blank=True, null=True, editable=False)
+    fecha_registro = models.DateField(auto_now_add=True, blank=True, null=True, editable=False)
     estado = models.CharField(max_length=50, blank=True, null=True)
     usuario = models.ForeignKey(User, blank=True, null=True, related_name='usuario')
     fecha_requerido = models.DateField(auto_now_add=True, blank=True, null=True)
